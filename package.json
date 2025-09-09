@@ -1,0 +1,46 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@types/autocannon": "^7.12.7",
+    "@types/compression": "^1.8.1",
+    "@types/morgan": "^1.9.10",
+    "autocannon": "^8.0.0",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.1",
+    "nodemailer": "^7.0.4",
+    "sharp": "^0.34.3",
+    "streamifier": "^0.1.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^4.0.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/Server.js"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.0.7",
+    "@types/nodemailer": "^6.4.17",
+    "@types/streamifier": "^0.1.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
