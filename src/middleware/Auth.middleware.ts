@@ -2,8 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import statusCode from "../common/constant/StatusCode.js";
 import errorResponse from "../common/constant/Error.js";
+import dotenv from "dotenv";
 
-const JWT_SECRET = "testing secret key"; 
+dotenv.config();
+
+const JWT_SECRET = process.env.SECRET_KEY || "testing secret key";
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -20,7 +23,7 @@ export function authMiddleware(
   next: NextFunction
 ): any {
   const authHeader = req.headers.authorization;
-console.log(authHeader);
+  console.log(authHeader);
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(statusCode.UNAUTHORIZED).json({
       error: errorResponse.FORBIDDEN_ACCESS,
@@ -31,7 +34,10 @@ console.log(authHeader);
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthenticatedRequest["user"];
+    const decoded = jwt.verify(
+      token,
+      JWT_SECRET
+    ) as AuthenticatedRequest["user"];
     req.user = decoded;
     next();
   } catch (err) {
@@ -43,7 +49,11 @@ console.log(authHeader);
 }
 
 export function authorizeRoles(...allowedRoles: string[]) {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction): any => {
+  return (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+  ): any => {
     const user = req.user;
 
     if (!user || !allowedRoles.includes(user.role)) {
