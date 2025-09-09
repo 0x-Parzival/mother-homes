@@ -33,7 +33,13 @@ dotenv.config();
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL,"http://localhost:3000","https://www.motherhomes.co.in"] // frontend URL from .env
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // added PATCH
+  credentials: true, // allow cookies/auth headers
+};
+
+app.use(cors(corsOptions));
 app.use(helmet());
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
@@ -189,5 +195,6 @@ dbConnect().then(() => {
 }).catch((error: Error) => {
   console.error("Database connection failed", error);
 });
+
 
 export default app;
