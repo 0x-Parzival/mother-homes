@@ -76,7 +76,7 @@ const EMAIL_TEMPLATE = `<!DOCTYPE html>
     <div class="otp-box">[OTP_CODE]</div>
     <p>If you didn't request this, you can safely ignore this email.</p>
     <div class="footer">
-      <p>© ${new Date().getFullYear()} ${process.env.APP_NAME || "Your Company"}. All rights reserved.</p>
+      <p>© ${new Date().getFullYear()}  "MotherHomes"}. All rights reserved.</p>
     </div>
   </div>
 </body>
@@ -113,7 +113,7 @@ export const sendOtpEmail = async (to: string, otp: string): Promise<EmailResult
     const htmlContent = EMAIL_TEMPLATE.replace("[OTP_CODE]", otp);
 
     const mailOptions:any = {
-      from: `"${process.env.APP_NAME || "Your Company"}" <${process.env.EMAIL}>`,
+      from: `"MotherHomes" <${process.env.EMAIL}>`,
       to,
       subject: "Your Email Verification Code",
       html: htmlContent,
