@@ -3,7 +3,7 @@ import { PropertyType } from "../entities/Properties.entity.js";
 import { logger } from "../utils/logger.js";
  import { deleteCloudinaryImage } from "../utils/deleteImageCloudinary.js";
 function isValidCategory(category: any): boolean {
-  return ["rent", "sale"].includes(category);
+  return ["rent", "sale","pg"].includes(category);
 }
 
 function isValidFurnishingType(type: any): boolean {
