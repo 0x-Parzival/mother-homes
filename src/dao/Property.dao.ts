@@ -27,7 +27,7 @@ export default class PropertyDao {
     logger.info("PropertyDao -> getPropertyById called", { id });
     try {
       const result = await this.Property.findById(id)
-        .populate("amenties")
+        .populate("amenities")
         .populate("services");
       if (result) {
         logger.info("PropertyDao -> getPropertyById success", { id });
@@ -52,7 +52,7 @@ export default class PropertyDao {
       const skip = (page - 1) * limit;
       const [results, total] = await Promise.all([
         this.Property.find(filter)
-          .populate("amenties")
+          .populate("amenities")
           .populate("services")
           .sort({ createdAt: -1 })
           .skip(skip)
