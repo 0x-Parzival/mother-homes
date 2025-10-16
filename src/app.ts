@@ -1,40 +1,44 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors';
+import express, { Request, Response } from "express";
+import cors from "cors";
 // import swaggerUi from 'swagger-ui-express';
 // import swaggerJsdoc from 'swagger-jsdoc';
-import dbConnect from './db/db.connect.js';
-import authRouter from './routes/Auth.routes.js';
-import propertyRouter from './routes/Property.routes.js';
+import dbConnect from "./db/db.connect.js";
+import authRouter from "./routes/Auth.routes.js";
+import propertyRouter from "./routes/Property.routes.js";
 // import { authSwaggerDefinitions } from './Schema/auth.swagger.js';
 // import { propertySwaggerDefinitions } from './Schema/property.swagger.js';
-import router from './routes/Amenties&service.route.js';
+import router from "./routes/Amenties&service.route.js";
 // import { serviceAmenitiesSwaggerDefinitions } from './Schema/amenties&services.swaggger.js';
-import appointmentRouter from './routes/Appointment.routes.js';
+import appointmentRouter from "./routes/Appointment.routes.js";
 // import { appointmentSwaggerDefinitions } from './Schema/appointment.swagger.js';
 import dotenv from "dotenv";
-import userRouter from './routes/User.routes.js';
-import { sendOtpEmail } from './common/services/email.js';
-import asyncHandler from './utils/asyncHandler.js';
-  import User from './entities/User.entitiy.js';
+import userRouter from "./routes/User.routes.js";
+import { sendOtpEmail } from "./common/services/email.js";
+import asyncHandler from "./utils/asyncHandler.js";
+import User from "./entities/User.entitiy.js";
 //   import { tenantSwaggerDefinitions } from './Schema/tenant.swagger.js';
-import tenantRouter from './routes/Tenant.routes.js';
+import tenantRouter from "./routes/Tenant.routes.js";
 // import { notificationSwaggerDefinitions } from './Schema/Notification.swagger.js';
-import notificationRouter from './routes/Notification.routes.js';
-import leadsRouter from './routes/Leads.routes.js';
-import ResetPassModel from './entities/ResetPass.entitiy.js';
-import morgan from 'morgan';
-import targetRouter from './routes/Target.routes.js';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import dashboardRouter from './routes/Dashboard.routes.js';
+import notificationRouter from "./routes/Notification.routes.js";
+import leadsRouter from "./routes/Leads.routes.js";
+import ResetPassModel from "./entities/ResetPass.entitiy.js";
+import morgan from "morgan";
+import targetRouter from "./routes/Target.routes.js";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import dashboardRouter from "./routes/Dashboard.routes.js";
 
 dotenv.config();
 
 const app = express();
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL,"http://localhost:5173","https://www.motherhomes.co.in"] // frontend URL from .env
+  origin: [
+    process.env.FRONTEND_URL,
+    "http://localhost:5173",
+    "https://www.motherhomes.co.in",
+  ].filter((url): url is string => url !== undefined), // frontend URL from .env
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // added PATCH
   credentials: true, // allow cookies/auth headers
 };
@@ -104,14 +108,13 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 */
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Server is running with ES Modules!');
+app.get("/", (_req: Request, res: Response) => {
+  res.send("Server is running with ES Modules!");
 });
 
-
 app.use("/api/auth", authRouter);
-app.use("/api/property", propertyRouter); 
-app.use("/api/amentiesservice", router); 
+app.use("/api/property", propertyRouter);
+app.use("/api/amentiesservice", router);
 app.use("/api/appointments", appointmentRouter);
 app.use("/api/user", userRouter);
 app.use("/api/tenant", tenantRouter);
@@ -120,82 +123,78 @@ app.use("/api/leads", leadsRouter);
 app.use("/api", targetRouter);
 app.use("/api", dashboardRouter);
 
+app.post(
+  "/api/sendemail",
+  asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+    User.deleteOne({ email });
+    try {
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message: "Email is required",
+        });
+      }
 
-app.post("/api/sendemail",asyncHandler( async (req: Request, res: Response) => {
-  const { email } = req.body;
-  User.deleteOne({email})
-  try {
-    
-    
-    if (!email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Email is required" 
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      User.create({ email, otp });
+
+      await sendOtpEmail(email, otp);
+
+      return res.status(200).json({
+        success: true,
+        message: "OTP sent successfully",
+      });
+    } catch (error: any) {
+      User.deleteOne({ email });
+      console.error("Error sending email:", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Failed to send OTP email",
       });
     }
+  })
+);
+app.post(
+  "/api/resetsendemail",
+  asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+    try {
+      if (!email) {
+        return res.status(400).json({
+          success: false,
+          message: "Email is required",
+        });
+      }
 
-   
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-User.create({email,otp});
-    
-    await sendOtpEmail(email, otp);
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      ResetPassModel.create({ email, otp });
 
-    return res.status(200).json({ 
-      success: true, 
-      message: "OTP sent successfully" 
-    });
+      await sendOtpEmail(email, otp);
 
-  } catch (error: any) {
-    User.deleteOne({email})
-    console.error("Error sending email:", error);
-    return res.status(500).json({ 
-      success: false, 
-      message: error.message || "Failed to send OTP email" 
-    });
-  }
-}));
-app.post("/api/resetsendemail",asyncHandler( async (req: Request, res: Response) => {
-  const { email } = req.body;
-  try {
-    
-    
-    if (!email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Email is required" 
+      return res.status(200).json({
+        success: true,
+        message: "OTP sent successfully",
+      });
+    } catch (error: any) {
+      User.deleteOne({ email });
+      console.error("Error sending email:", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Failed to send OTP email",
       });
     }
-
-   
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-ResetPassModel.create({email,otp});
-    
-    await sendOtpEmail(email, otp);
-
-    return res.status(200).json({ 
-      success: true, 
-      message: "OTP sent successfully" 
+  })
+);
+dbConnect()
+  .then(() => {
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server listening on http://0.0.0.0:${PORT}`);
+      console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
     });
-
-  } catch (error: any) {
-    User.deleteOne({email})
-    console.error("Error sending email:", error);
-    return res.status(500).json({ 
-      success: false, 
-      message: error.message || "Failed to send OTP email" 
-    });
-  }
-}));
-dbConnect().then(() => {
-     app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on http://0.0.0.0:${PORT}`);
-   console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
-});
-
-}).catch((error: Error) => {
-  console.error("Database connection failed", error);
-});
-
+  })
+  .catch((error: Error) => {
+    console.error("Database connection failed", error);
+  });
 
 export default app;
-
