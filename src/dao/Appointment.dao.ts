@@ -174,4 +174,16 @@ async getAppointmentByPropertyId(id: string) {
       throw error;
     }
   }
+
+  async deleteAllAppointmentsByPropertyId(propertyId: string) {
+    logger.info("AppointmentDao -> deleteAllAppointmentsByPropertyId called", { propertyId });
+    try {
+      const result = await this.appointment.deleteMany({ property_id: propertyId });
+      logger.info("AppointmentDao -> deleteAllAppointmentsByPropertyId success", { propertyId, deletedCount: result.deletedCount });
+      return result;
+    } catch (error: any) {
+      logger.error("AppointmentDao -> deleteAllAppointmentsByPropertyId error", { propertyId, error: error.message });
+      throw error;
+    }
+  }
 }

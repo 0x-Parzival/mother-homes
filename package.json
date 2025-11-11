@@ -27,8 +27,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/Server.js",
-    "seed": "npx ts-node src/seed.ts"
+    "start": "npm run build && node dist/server.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

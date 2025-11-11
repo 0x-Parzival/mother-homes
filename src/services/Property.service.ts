@@ -1,4 +1,6 @@
 import PropertyDao from "../dao/Property.dao.js";
+import TenantDao from "../dao/Tenant.dao.js";
+import AppointmentDao from "../dao/Appointment.dao.js";
 import { PropertyType } from "../entities/Properties.entity.js";
 import { logger } from "../utils/logger.js";
  import { deleteCloudinaryImage } from "../utils/deleteImageCloudinary.js";
@@ -22,9 +24,13 @@ function isValidLocation(location: any): boolean {
 
 export default class PropertyServices {
   private propertyDao: PropertyDao;
+  private tenantDao: TenantDao;
+  private appointmentDao: AppointmentDao;
 
   constructor() {
     this.propertyDao = new PropertyDao();
+    this.tenantDao = new TenantDao();
+    this.appointmentDao = new AppointmentDao();
   }
 
   async createProperty(data: Partial<PropertyType>) {
@@ -153,6 +159,11 @@ async deleteProperty(id: string) {
       throw new Error("Property not found");
     }
     console.log(property);
+
+    // Cascading delete: Delete all related data
+    await this.tenantDao.deleteAllTenantsByPropertyId(id);
+    await this.appointmentDao.deleteAllAppointmentsByPropertyId(id);
+    logger.info("Deleted all related tenants and appointments", { propertyId: id });
 
     // Delete each image in Cloudinary if images is an array of URLs
     if (Array.isArray(property.images)) {

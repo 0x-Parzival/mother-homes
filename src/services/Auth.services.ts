@@ -69,10 +69,10 @@ export default class AuthService {
         User_Name: user.User_Name,
         role:user.role
       };
-const JWT_SECRET = process.env.SECRET_KEY;
-if (!JWT_SECRET) {
+       const JWT_SECRET = process.env.SECRET_KEY;
+      if (!JWT_SECRET) {
   throw new Error("SECRET_KEY is not defined in environment variables");
-}
+        }
       const token = jwt.sign(payload,JWT_SECRET, {
         expiresIn: "20d",
       });

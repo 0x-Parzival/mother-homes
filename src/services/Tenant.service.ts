@@ -16,8 +16,9 @@ export default class TenantServices {
   }
 
   async createTenant(data: {
-    name: string;
-    users: string[]; // Array of user emails or IDs
+    name?: string; // For Normal properties
+    tenantDetails?: { name: string; email: string }[]; // For PG properties
+    users?: string[]; // Array of user emails or IDs (legacy support)
     property_id: string;
     flatNo: string;
     society: string;
@@ -34,39 +35,82 @@ export default class TenantServices {
     try {
       logger.info("TenantServices -> createTenant called", { data });
 
-      const requiredFields = ["name", "property_id", "startDate", "rent", "property_type"];
+      const requiredFields = ["property_id", "startDate", "rent", "property_type"];
       for (const field of requiredFields) {
         if (!data[field as keyof typeof data]) {
           throw new Error(`Missing required field: ${field}`);
         }
       }
 
-      // Convert user emails to ObjectIds
+      // Validate based on property type
+      if (data.property_type === "Normal" && !data.name) {
+        throw new Error("Name is required for Normal properties");
+      }
+      if (data.property_type === "Pg" && (!data.tenantDetails || data.tenantDetails.length === 0)) {
+        throw new Error("Tenant details (name and email) are required for PG properties");
+      }
+
+      // Handle user creation/lookup based on property type
       const userIds: Types.ObjectId[] = [];
-      for (const userIdentifier of data.users) {
-        let user:any;
-        if (userIdentifier.includes("@")) {
-          user = await this.userDao.findByEmail(userIdentifier);
-        } else {
-          user = await this.userDao.findByUserId(userIdentifier);
+      let tenantDetailsWithUserIds: any[] = [];
+
+      if (data.property_type === "Pg" && data.tenantDetails) {
+        // For PG: Create/find users for each tenant detail
+        for (const detail of data.tenantDetails) {
+          let user: any = await this.userDao.findByEmail(detail.email);
+          if (!user) {
+            // Create user if not exists
+            user = await this.userDao.createUser({
+              User_Name: detail.name,
+              email: detail.email,
+              role: "user"
+            });
+          }
+          userIds.push(user._id);
+          tenantDetailsWithUserIds.push({
+            name: detail.name,
+            email: detail.email,
+            user_id: user._id
+          });
         }
-        
-        if (!user) {
-          throw new Error(`User not found: ${userIdentifier}`);
+      } else if (data.property_type === "Normal" && data.users) {
+        // For Normal: Use existing user lookup logic
+        for (const userIdentifier of data.users) {
+          let user: any;
+          if (userIdentifier.includes("@")) {
+            user = await this.userDao.findByEmail(userIdentifier);
+          } else {
+            user = await this.userDao.findByUserId(userIdentifier);
+          }
+          
+          if (!user) {
+            throw new Error(`User not found: ${userIdentifier}`);
+          }
+          userIds.push(user._id);
         }
-        userIds.push(user._id);
       }
 
       // Create tenant data
-      const tenantData = {
-        ...data,
+      const tenantData: any = {
         users: userIds,
         property_id: new Types.ObjectId(data.property_id),
+        flatNo: data.flatNo,
+        society: data.society,
+        members: data.members,
+        startDate: data.startDate,
+        rent: data.rent,
+        property_type: data.property_type,
         Payments: data.Payments?.map(payment => ({
           ...payment,
           user_id: new Types.ObjectId(payment.user_id)
         }))
       };
+
+      if (data.property_type === "Normal") {
+        tenantData.name = data.name;
+      } else if (data.property_type === "Pg") {
+        tenantData.tenantDetails = tenantDetailsWithUserIds;
+      }
 
       const tenant = await this.tenantDao.createTenant(tenantData);
       if (!tenant) {

@@ -7,8 +7,15 @@ interface Payment {
   amount:Number
 }
 
+interface TenantDetails {
+  name: string;
+  email: string;
+  user_id?: Types.ObjectId;
+}
+
 export interface TenantType extends Document {
-  name: String;
+  name?: String; // For Normal properties only
+  tenantDetails?: TenantDetails[]; // For PG properties only
   users: Types.ObjectId[];
   property_id: Types.ObjectId;
   flatNo: String;
@@ -40,7 +47,22 @@ const TenantSchema = new Schema<TenantType>(
     },
     name: {
       type: String,
+      required: function() { return this.property_type === "Normal"; }
     },
+    tenantDetails: [{
+      name: {
+        type: String,
+        required: true
+      },
+      email: {
+        type: String,
+        required: true
+      },
+      user_id: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    }],
     society: {
       type: String,
     },

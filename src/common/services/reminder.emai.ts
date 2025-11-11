@@ -39,7 +39,7 @@ const RENT_REMINDER_TEMPLATE = (username: string) => `
       <a href="${process.env.PAYMENT_PORTAL || "#"}" class="button">Make Payment</a>
     </div>
     <div class="footer">
-      © ${new Date().getFullYear()} ${process.env.APP_NAME || "Your Company"}. All rights reserved.
+      © ${new Date().getFullYear()} MotherHomes.co.in. All rights reserved.
     </div>
   </div>
 </body>

@@ -201,7 +201,7 @@ const APPOINTMENT_STATUS_TEMPLATE = (
     </div>
 
     <div class="footer">
-      <p>© ${new Date().getFullYear()} ${process.env.APP_NAME || "Your Company"}. All rights reserved.</p>
+      <p>© ${new Date().getFullYear()} MotherHomes.co.in. All rights reserved.</p>
       ${
         appointmentDetails.whatsappUpdates
           ? "<p>You are subscribed to WhatsApp updates for this appointment.</p>"

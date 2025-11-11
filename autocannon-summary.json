@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Appointment - Create",
+    "requests": 95.6,
+    "latency": 984.23,
+    "errors": 0,
+    "timeouts": 0,
+    "non2xx": 0,
+    "throughput": 54783.6
+  }
+]

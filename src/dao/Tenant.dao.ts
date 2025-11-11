@@ -300,4 +300,16 @@ const currentMembers = parseInt(tenant.members) || 0;
       throw error;
     }
   }
+
+  async deleteAllTenantsByPropertyId(propertyId: string) {
+    logger.info("TenantDao -> deleteAllTenantsByPropertyId called", { propertyId });
+    try {
+      const result = await this.tenant.deleteMany({ property_id: propertyId });
+      logger.info("TenantDao -> deleteAllTenantsByPropertyId success", { propertyId, deletedCount: result.deletedCount });
+      return result;
+    } catch (error: any) {
+      logger.error("TenantDao -> deleteAllTenantsByPropertyId error", { propertyId, error: error.message });
+      throw error;
+    }
+  }
 }

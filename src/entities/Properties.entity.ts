@@ -2,7 +2,6 @@
 import { Document, Schema, model, Types } from "mongoose";
 import { AmenityModel, ServiceModel } from "./serives&Amenties.entity.js";
 
-
 export interface PropertyType extends Document {
   property_name: string;
   description: string;
@@ -23,9 +22,9 @@ export interface PropertyType extends Document {
   bed: number;
   bathroom: number;
   availability: boolean;
-  area:string
-  latitude: string;
-  longitude: string;
+  area: string;
+  latitude?: string;
+  longitude?: string;
   currentTenant?: Types.ObjectId | null;
 }
 
@@ -36,10 +35,10 @@ const PropertySchema = new Schema<PropertyType>(
     rate: { type: String, required: true },
     category: { type: String, enum: ["rent", "sale", "pg"], required: true },
     amenities: [{ type: Schema.Types.ObjectId, ref: "Amenity" }], // fixed
-    services: [{ type: Schema.Types.ObjectId, ref: "Service" }], 
+    services: [{ type: Schema.Types.ObjectId, ref: "Service" }],
     images: { type: [String], default: [] },
     videos: { type: [String], default: [] },
-     perPersonPrice: { type: String },
+    perPersonPrice: { type: String },
     totalCapacity: { type: String }, // added missing comma here ✅
     furnishing_type: {
       type: String,
@@ -49,9 +48,9 @@ const PropertySchema = new Schema<PropertyType>(
     city: { type: String, required: true },
     state: { type: String, required: true },
     area: { type: String, required: true },
-    latitude: { type: String, required: true },
-    longitude: { type: String, required: true },
-   scheduledVisit: [{ type: Schema.Types.ObjectId, ref: "Visit" }],
+    latitude: { type: String },
+    longitude: { type: String },
+    scheduledVisit: [{ type: Schema.Types.ObjectId, ref: "Visit" }],
     total_views: { type: Number, default: 0 },
     bed: { type: Number, default: 0 },
     bathroom: { type: Number, default: 0 },
@@ -61,8 +60,6 @@ const PropertySchema = new Schema<PropertyType>(
   },
   { timestamps: true }
 );
-
-
 
 export const PropertyModel = model<PropertyType>("Property", PropertySchema);
 export default PropertyModel;
