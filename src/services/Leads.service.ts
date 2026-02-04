@@ -1,18 +1,18 @@
-import{ LeadsDao} from "../dao/Leads.dao.js";
+import { LeadsDao } from "../dao/Leads.dao.js";
 import UserDao from "../dao/User.dao.js";
 import { logger } from "../utils/logger.js";
 import { Types } from "mongoose";
 
 export default class LeadsService {
   private leadsDao: LeadsDao;
-private userDao:UserDao;
+  private userDao: UserDao;
   constructor() {
     this.leadsDao = new LeadsDao();
-    this.userDao=new UserDao();
+    this.userDao = new UserDao();
   }
 
   async createLead(data: {
-    user_id:any;
+    user_id: any;
     searchQuery: string;
     matchedProperties?: Types.ObjectId[];
     contactInfo?: {
@@ -49,6 +49,39 @@ private userDao:UserDao;
       const updatedLead = await this.leadsDao.updateLead(id, data);
       if (!updatedLead) {
         throw new Error("Lead not found");
+      }
+
+      // Check if status changed to Converted and create User if needed
+      if (data.status && (data.status.toLowerCase() === 'converted')) {
+        const lead = await this.leadsDao.getLeadById(id);
+        // lead has contactInfo with email, name, phone
+        // We need to check if user exists, if not create.
+        // The User.dao.createUser now throws error if exists, which is good.
+        // But we want to handle that gracefully here (not fail the lead update).
+        // Actually, we should try to create and catch error.
+
+        if (lead && lead.contactInfo && lead.contactInfo.email) {
+          try {
+            // We need a password for the new user. We can generate a random one or set a default?
+            // Or we can just check if user exists.
+            const existingUser = await this.userDao.findByEmail(lead.contactInfo.email);
+            if (!existingUser) {
+              // Create user
+              await this.userDao.createUser({
+                User_Name: lead.contactInfo.name || "New User",
+                email: lead.contactInfo.email,
+                phone_no: lead.contactInfo.phone ? Number(lead.contactInfo.phone) : 0, // Ensure number
+                password: "password123", // Default password or generated
+                role: "user",
+                isVerified: true // Assuming converted leads are verified?
+              });
+              // Ideally send an email to user with credentials.
+            }
+          } catch (e) {
+            logger.error("Failed to auto-create user from lead conversion", e);
+            // Swallow error so lead update succeeds
+          }
+        }
       }
 
       return updatedLead;

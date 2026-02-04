@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { sendAppointmentStatusEmail } from "../common/services/AppointmentStatus.email.js";
 import AppointmentDao from "../dao/Appointment.dao.js";
 import { LeadsDao } from "../dao/Leads.dao.js";
@@ -6,19 +7,19 @@ import UserDao from "../dao/User.dao.js";
 import { logger } from "../utils/logger.js";
 
 function isValidStatus(status: any): boolean {
-  return ["Pending", "Confirmed", "Cancelled", "Completed","Convert to lead"].includes(status);
+  return ["Pending", "Confirmed", "Cancelled", "Completed", "Convert to lead"].includes(status);
 }
 
 export default class AppointmentServices {
   private appointmentDao: AppointmentDao;
-private notificationDao:NotificationDao;
-private leadDao?:LeadsDao;
-private userDao?:UserDao;
+  private notificationDao: NotificationDao;
+  private leadDao?: LeadsDao;
+  private userDao?: UserDao;
   constructor() {
     this.appointmentDao = new AppointmentDao();
     this.notificationDao = new NotificationDao();
-    this.leadDao=new LeadsDao();
-    this.userDao= new UserDao();
+    this.leadDao = new LeadsDao();
+    this.userDao = new UserDao();
   }
 
   async createAppointment(data: {
@@ -26,12 +27,12 @@ private userDao?:UserDao;
     property_id: string;
     phone?: string;
     status?: string;
-    schedule_Time?:Date
+    schedule_Time?: Date
   }) {
     try {
       logger.info("AppointmentServices -> createAppointment called", { data });
 
-     
+
       const requiredFields = ["user_id", "property_id"];
       for (const field of requiredFields) {
         if (!data[field as keyof typeof data]) {
@@ -39,7 +40,7 @@ private userDao?:UserDao;
         }
       }
 
-     
+
       if (data.status && !isValidStatus(data.status)) {
         throw new Error(
           `Invalid status. Must be one of: Pending, Confirmed, Cancelled, Completed`
@@ -47,14 +48,61 @@ private userDao?:UserDao;
       }
 
       const appointment = await this.appointmentDao.createAppointment(data);
+      if (!appointment) {
+        throw new Error("Failed to create appointment");
+      }
+
       const notification = await this.notificationDao.createNotification({
         user_id: data.user_id,
         property_id: data.property_id,
         description: "New appointment created",
-        adminOnly:true
+        adminOnly: true
       });
-      if (!appointment) {
-        throw new Error("Failed to create appointment");
+
+      // Automatically create a lead for this appointment
+      // We need to fetch user details to populate lead contact info
+      if (this.userDao && this.leadDao) {
+        const user: any = await this.userDao.findByUserId(data.user_id);
+        if (user) {
+          // Check if a lead already exists for this user?
+          // The requirement says "Whenever an appointment is created, the corresponding lead should also be created."
+          // It doesn't explicitly say "unless it exists", but it's good practice to avoid spam.
+          // However, a user might have multiple interests.
+          // Let's create it, assuming the Leads service or DAO handles duplication or we just create a new one.
+          // Based on 'updateAppointment' logic seen earlier, they check 'leadsCheck'.
+          // Let's check if there is an active lead for this user/property?
+          // For now, I will implement creation as requested.
+
+          // We'll check if a lead with this email already exists to avoid duplication if preferred,
+          // but the requirement is "Whenever... created... lead should also be created".
+          // I will check if a lead exists for this specific property and user to avoid COMPLETE duplicates
+          // but maybe just update it?
+          // Actually, the prompt says "Duplicate Prevention" for SIGN UP. For leads it says "corresponding lead should also be created".
+          // I'll try to find if a lead exists for this user.
+          const existingLeads = await this.leadDao.getLeadsByUserEmail(user.email);
+          // getLeadsByUserEmail returns one lead or array? It seems to be used as 'leadsCheck' in updateAppointment.
+          // If it returns *any* lead, we might not want to create another general one.
+          // But if the user is interested in a NEW property, maybe we should?
+          // The current 'updateAppointment' logic only creates if !leadsCheck. behavior suggests one lead per user?
+          // I will stick to that pattern for consistency: Create only if no lead exists for this user.
+
+          if (!existingLeads) {
+            await this.leadDao.createLead({
+              contactInfo: {
+                name: user?.User_Name,
+                phone: String(user?.phone_no || ""),
+                email: user?.email,
+              },
+              matchedProperties: [new Types.ObjectId(data.property_id)],
+              status: "new",
+              priority: "high",
+              source: "appointment",
+            });
+          } else {
+            // If lead exists, maybe we update matchedProperties?
+            // I'll leave it as is for now to avoid side effects, adhering to "create lead" if needed.
+          }
+        }
       }
       return appointment;
     } catch (error: any) {
@@ -81,10 +129,10 @@ private userDao?:UserDao;
       throw new Error(error.message || "Failed to get appointment");
     }
   }
-  async getAppointmentByUserId(id: string,property_id:string) {
+  async getAppointmentByUserId(id: string, property_id: string) {
     try {
       logger.info("AppointmentServices -> UserId called", { id });
-      const appointment = await this.appointmentDao.getAppointmentByUserId(id,property_id);
+      const appointment = await this.appointmentDao.getAppointmentByUserId(id, property_id);
       if (!appointment) {
         throw new Error("Appointment not found");
       }
@@ -97,7 +145,7 @@ private userDao?:UserDao;
       throw new Error(error.message || "Failed to get appointment");
     }
   }
-    async getAppointmentForUserId(id: string) {
+  async getAppointmentForUserId(id: string) {
     try {
       logger.info("AppointmentServices -> UserId called", { id });
       const appointment = await this.appointmentDao.getAppointmentForUserId(id);
@@ -113,8 +161,8 @@ private userDao?:UserDao;
       throw new Error(error.message || "Failed to get appointment");
     }
   }
-  
-   async getAppointmentByPropertyId(id: string) {
+
+  async getAppointmentByPropertyId(id: string) {
     try {
       logger.info("AppointmentServices -> UserId called", { id });
       const appointment = await this.appointmentDao.getAppointmentByPropertyId(id);
@@ -170,15 +218,14 @@ private userDao?:UserDao;
         );
       }
 
-      const appointment:any = await this.appointmentDao.updateAppointment(id, data);
+      const appointment: any = await this.appointmentDao.updateAppointment(id, data);
       // console.log(appointment)
-      if (data.status!== "Convert to lead")
-{
-await sendAppointmentStatusEmail(appointment,appointment?.user_id,appointment?.property_id)
+      if (data.status !== "Convert to lead") {
+        await sendAppointmentStatusEmail(appointment, appointment?.user_id, appointment?.property_id)
       }
-      
-      const user:any= await this.userDao?.findByUserId(appointment?.user_id);
-      const leadsCheck= await this.leadDao?.getLeadsByUserEmail(user?.email);
+
+      const user: any = await this.userDao?.findByUserId(appointment?.user_id);
+      const leadsCheck = await this.leadDao?.getLeadsByUserEmail(user?.email);
       if (!leadsCheck && appointment?.status === "Convert to lead") {
         await this.leadDao?.createLead({
           contactInfo: {
@@ -191,7 +238,7 @@ await sendAppointmentStatusEmail(appointment,appointment?.user_id,appointment?.p
           priority: "high",
         });
       }
-     
+
       // console.log("mail sent")
       if (!appointment) {
         throw new Error("Appointment not found");

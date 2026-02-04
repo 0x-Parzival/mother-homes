@@ -16,12 +16,13 @@ export default class UserDao {
   async createUser(userData: any) {
     try {
       logger.info("src->dao->user.dao->createUser");
-      // Create new user if not exists, otherwise update
-      const data = await this.user.findOneAndUpdate(
-        { email: userData.email },
-        { $set: userData },
-        { new: true, upsert: true }
-      );
+      // Check if user already exists
+      const existingUser = await this.user.findOne({ email: userData.email });
+      if (existingUser) {
+        throw new Error("User already exists");
+      }
+
+      const data = await this.user.create(userData);
       return data;
     } catch (error) {
       logger.error("Failed user creation", error);
@@ -31,10 +32,10 @@ export default class UserDao {
   async DeleteUser(email: any) {
     try {
       logger.info("src->dao->user.dao->DeleteUser");
-      const data = await this.user.deleteOne({email});
+      const data = await this.user.deleteOne({ email });
       return data;
     } catch (error) {
-    
+
       logger.error("Failed user deletionn", error);
       throw new Error("Failed user deletion");
     }
@@ -49,7 +50,7 @@ export default class UserDao {
       throw new Error("Failed to find user");
     }
   }
-   async findByUserId(id: string) {
+  async findByUserId(id: string) {
     try {
       logger.info("src->dao->user.dao->findByUserId");
       return await this.user.findById(id);
@@ -58,25 +59,25 @@ export default class UserDao {
       throw new Error("Failed to find user");
     }
   }
-     async findByUserEmailAndUpdate(email: string) {
+  async findByUserEmailAndUpdate(email: string) {
     try {
       logger.info("src->dao->user.dao->findByUserEmailAndUpdate");
       console.log(email);
-      return await this.user.findOneAndUpdate({email},{isVerified:true});
+      return await this.user.findOneAndUpdate({ email }, { isVerified: true });
     } catch (error) {
       logger.error("Failed finding user by email and update", error);
       throw new Error("Failed to find user");
     }
   }
   async updateUserById(id: string, updateData: any) {
-  try {
-    logger.info("src->dao->user.dao->updateUserById");
-    return await this.user.findByIdAndUpdate(id, updateData, { new: true });
-  } catch (error) {
-    logger.error("Failed updating user", error);
-    throw new Error("Failed to update user");
+    try {
+      logger.info("src->dao->user.dao->updateUserById");
+      return await this.user.findByIdAndUpdate(id, updateData, { new: true });
+    } catch (error) {
+      logger.error("Failed updating user", error);
+      throw new Error("Failed to update user");
+    }
   }
-}
 
   async deleteUserById(id: string) {
     try {
@@ -87,7 +88,7 @@ export default class UserDao {
       throw new Error("Failed user deletion by id");
     }
   }
-   async getAllUsers({ page = 1, limit = 10 }: PaginationParams) {
+  async getAllUsers({ page = 1, limit = 10 }: PaginationParams) {
     try {
       logger.info("src->dao->user.dao->getAllUsers");
       const skip = (page - 1) * limit;
