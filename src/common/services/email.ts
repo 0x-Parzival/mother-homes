@@ -95,14 +95,19 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false // Only for testing, remove in production
   }
 });
-// Verify connection configuration
-transporter.verify((error) => {
-  if (error) {
-    console.error("Email server connection failed:", error);
-  } else {
-    console.log("Email server is ready to take our messages");
-  }
-});
+
+// Verify connection configuration if credentials exist
+if (process.env.EMAIL && process.env.APP_PASS && process.env.EMAIL !== 'placeholder') {
+  transporter.verify((error) => {
+    if (error) {
+      console.error("Email server connection failed:", error);
+    } else {
+      console.log("Email server is ready to take our messages");
+    }
+  });
+} else {
+  console.warn("Email credentials missing or placeholder. Email service will be disabled.");
+}
 
 export const sendOtpEmail = async (to: string, otp: string): Promise<EmailResult> => {
   try {
@@ -112,7 +117,7 @@ export const sendOtpEmail = async (to: string, otp: string): Promise<EmailResult
 
     const htmlContent = EMAIL_TEMPLATE.replace("[OTP_CODE]", otp);
 
-    const mailOptions:any = {
+    const mailOptions: any = {
       from: `"${process.env.APP_NAME || "Your Company"}" <${process.env.EMAIL}>`,
       to,
       subject: "Your Email Verification Code",
@@ -120,9 +125,17 @@ export const sendOtpEmail = async (to: string, otp: string): Promise<EmailResult
       priority: 'high',
     };
 
-    const info:any = await transporter.sendMail(mailOptions);
+    if (!process.env.EMAIL || !process.env.APP_PASS || process.env.EMAIL === 'placeholder') {
+      console.warn('Email credentials missing. Skipping email send.');
+      return {
+        success: true,
+        message: "Email skipped (dev mode)",
+      };
+    }
+
+    const info: any = await transporter.sendMail(mailOptions);
     console.log("Message sent: %s", info.messageId);
-    
+
     return {
       success: true,
       message: "OTP email sent successfully",
