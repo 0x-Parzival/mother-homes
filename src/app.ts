@@ -204,4 +204,14 @@ app.post("/api/resetsendemail", asyncHandler(async (req: Request, res: Response)
   }
 }));
 
+// Global error handler
+app.use((err: any, _req: Request, res: Response, _next: any) => {
+  console.error("Global Error Handler:", err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
+});
+
 export default app;
