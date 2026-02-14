@@ -99,6 +99,12 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 */
 
+
+// Serve 3D room files statically from the backend bundle
+// This is a fallback because Vercel static routing was failing
+// Placed BEFORE dbConnect to ensure they load even if DB is down
+app.use('/carousel_deployment', express.static(path.join(process.cwd(), 'motherhomes-frontend', 'public', 'carousel_deployment')));
+
 // Database connection middleware for production/serverless
 app.use(async (_req, _res, next) => {
   try {
@@ -148,9 +154,7 @@ app.get('/api/debug-fs', (_req, res) => {
   }
 });
 
-// Serve 3D room files statically from the backend bundle
-// This is a fallback because Vercel static routing was failing
-app.use('/carousel_deployment', express.static(path.join(process.cwd(), 'motherhomes-frontend', 'public', 'carousel_deployment')));
+
 
 app.use("/api/auth", authRouter);
 app.use("/api/property", propertyRouter);
