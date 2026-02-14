@@ -28,8 +28,7 @@
     },
     {
       "src": "/carousel_deployment/(.*)",
-      "dest": "/motherhomes-frontend/carousel_deployment/$1",
-      "continue": true
+      "dest": "/motherhomes-frontend/public/carousel_deployment/$1"
     },
     {
       "src": "/assets/(.*)",
