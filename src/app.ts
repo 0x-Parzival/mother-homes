@@ -100,6 +100,10 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 */
 
 
+
+// Specific route for Room 14 which has a nested 'dist' folder
+app.use('/carousel_deployment/ThreeJS-Room14', express.static(path.join(process.cwd(), 'motherhomes-frontend', 'public', 'carousel_deployment', 'ThreeJS-Room14', 'dist')));
+
 // Serve 3D room files statically from the backend bundle
 // This is a fallback because Vercel static routing was failing
 // Placed BEFORE dbConnect to ensure they load even if DB is down
