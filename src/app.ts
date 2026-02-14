@@ -113,6 +113,41 @@ app.get('/api', (_req: Request, res: Response) => {
   res.send('Server is running with ES Modules!');
 });
 
+// DEBUG: List files to find where the static assets are
+import fs from 'fs';
+import path from 'path';
+app.get('/api/debug-fs', (_req, res) => {
+  try {
+    const currentDir = process.cwd();
+    const parentDir = path.join(currentDir, '..');
+
+    const listDir1 = fs.readdirSync(currentDir);
+    let listDir2: string[] = [];
+    try { listDir2 = fs.readdirSync(parentDir); } catch (e) { }
+
+    let listFrontend: string[] = [];
+    try { listFrontend = fs.readdirSync(path.join(currentDir, 'motherhomes-frontend')); } catch (e) { }
+
+    let listFrontendDist: string[] = [];
+    try { listFrontendDist = fs.readdirSync(path.join(currentDir, 'motherhomes-frontend', 'dist')); } catch (e) { }
+
+    let listPublic: string[] = [];
+    try { listPublic = fs.readdirSync(path.join(currentDir, 'public')); } catch (e) { }
+
+    res.json({
+      currentDir,
+      parentDir,
+      filesInCurrent: listDir1,
+      filesInParent: listDir2,
+      filesInFrontend: listFrontend,
+      filesInFrontendDist: listFrontendDist,
+      filesInPublic: listPublic
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/property", propertyRouter);
 app.use("/api/amentiesservice", router);
