@@ -28,6 +28,9 @@
       "continue": true
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
       "dest": "/motherhomes-frontend/index.html"
     }
