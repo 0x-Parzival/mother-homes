@@ -3,6 +3,9 @@ import { logger } from "../utils/logger.js";
 import dotenv from "dotenv"
 dotenv.config()
 const dbConnect = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
   try {
     await mongoose.connect(`${process.env.URI}`);
     logger.info("DB CONNECTED.......");

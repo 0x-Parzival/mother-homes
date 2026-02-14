@@ -98,10 +98,19 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 */
 
+// Database connection middleware for production/serverless
+app.use(async (_req, _res, next) => {
+  try {
+    await dbConnect();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/', (_req: Request, res: Response) => {
   res.send('Server is running with ES Modules!');
 });
-
 
 app.use("/api/auth", authRouter);
 app.use("/api/property", propertyRouter);
@@ -113,7 +122,6 @@ app.use("/api/notification", notificationRouter);
 app.use("/api/leads", leadsRouter);
 app.use("/api", targetRouter);
 app.use("/api", dashboardRouter);
-
 
 app.post("/api/sendemail", asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
@@ -165,18 +173,16 @@ app.post("/api/sendemail", asyncHandler(async (req: Request, res: Response) => {
     });
   }
 }));
+
 app.post("/api/resetsendemail", asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
-
-
     if (!email) {
       return res.status(400).json({
         success: false,
         message: "Email is required"
       });
     }
-
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     ResetPassModel.create({ email, otp });
@@ -197,14 +203,5 @@ app.post("/api/resetsendemail", asyncHandler(async (req: Request, res: Response)
     });
   }
 }));
-dbConnect().then(() => {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening on http://0.0.0.0:${PORT}`);
-    console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
-  });
-
-}).catch((error: Error) => {
-  console.error("Database connection failed", error);
-});
 
 export default app;

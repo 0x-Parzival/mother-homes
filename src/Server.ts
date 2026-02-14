@@ -23,12 +23,9 @@ if (cluster.isPrimary) {
   });
 
 } else {
-  dbConnect().then(() => {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Worker ${process.pid}: Server running on http://0.0.0.0:${PORT}`);
-      console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
-    });
-  }).catch((error: Error) => {
-    console.error("Database connection failed", error);
+  // Local development listener
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Worker ${process.pid}: Server running on http://0.0.0.0:${PORT}`);
+    console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
   });
 }
