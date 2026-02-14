@@ -13,26 +13,38 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "src/app.ts"
+      "source": "/api/(.*)",
+      "destination": "src/app.ts"
     },
     {
-      "src": "/api",
-      "dest": "src/app.ts"
+      "source": "/api",
+      "destination": "src/app.ts"
     },
     {
-      "src": "/(.*)",
-      "dest": "/motherhomes-frontend/$1",
-      "continue": true
+      "source": "/carousel_deployment/(.*)",
+      "destination": "/motherhomes-frontend/carousel_deployment/$1"
     },
     {
-      "handle": "filesystem"
+      "source": "/assets/(.*)",
+      "destination": "/motherhomes-frontend/assets/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/motherhomes-frontend/index.html"
+      "source": "/images/(.*)",
+      "destination": "/motherhomes-frontend/images/$1"
+    },
+    {
+      "source": "/favicon.png",
+      "destination": "/motherhomes-frontend/favicon.png"
+    },
+    {
+      "source": "/(.*\\.[^/.]+)",
+      "destination": "/motherhomes-frontend/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/motherhomes-frontend/index.html"
     }
   ]
 }
