@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ThreeDCarousel from "../../components/ThreeDCarousel";
 import PropertiesSection from "../../components/PropertiesSection";
 import Feature from "../../components/Feature";
 
@@ -23,7 +22,8 @@ const HomePage: React.FC = () => {
     <>
       <ToastContainer position="top-right" />
       <Navbar />
-      <ThreeDCarousel />
+      {/* Spacer for Persistent Carousel */}
+      <div className="h-screen w-full relative pointer-events-none mb-10 md:mb-0"></div>
       <PropertiesSection />
       <Feature />
 

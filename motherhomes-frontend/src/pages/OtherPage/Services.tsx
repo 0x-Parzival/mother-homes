@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
-import ThreeDCarousel from "../../components/ThreeDCarousel";
 
-const SERVICES_SLIDES = [
+
+export const SERVICES_SLIDES = [
   // 1. Accommodation Options
   {
     roomPath: "/carousel_deployment/ThreeJS-Room01/index.html",
@@ -185,9 +185,9 @@ function Services() {
         </div>
       )}
 
-      {/* Hero Section - Replaced with 3D Carousel */}
-      <div className="relative pt-20 h-screen bg-gray-900">
-        <ThreeDCarousel slides={SERVICES_SLIDES} />
+      {/* Hero Section - Spacer for Persistent Carousel */}
+      <div className="relative pt-20 h-screen bg-transparent pointer-events-none">
+        {/* Carousel is now global in App.tsx */}
       </div>
 
       {/* Stats Section */}
