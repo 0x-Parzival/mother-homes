@@ -47,12 +47,12 @@ const Navbar: React.FC = () => {
     },
     ...(isLoggedIn
       ? [
-          {
-            name: "Dashboard",
-            path: "/dashboard",
-            icon: <Gauge className="w-4 h-4" />,
-          },
-        ]
+        {
+          name: "Dashboard",
+          path: "/dashboard",
+          icon: <Gauge className="w-4 h-4" />,
+        },
+      ]
       : []),
   ];
 
@@ -72,19 +72,19 @@ const Navbar: React.FC = () => {
     },
     ...(isLoggedIn
       ? [
-          {
-            name: "Dashboard",
-            path: "/dashboard",
-            icon: <Gauge className="w-5 h-5" />,
-          },
-        ]
+        {
+          name: "Dashboard",
+          path: "/dashboard",
+          icon: <Gauge className="w-5 h-5" />,
+        },
+      ]
       : [
-          {
-            name: "Sign In",
-            path: "/signin",
-            icon: <User className="w-5 h-5" />,
-          },
-        ]),
+        {
+          name: "Sign In",
+          path: "/signin",
+          icon: <User className="w-5 h-5" />,
+        },
+      ]),
   ];
 
   const toggleMenu = (): void => {
@@ -137,18 +137,16 @@ const Navbar: React.FC = () => {
                     <Link
                       key={item.name}
                       to={item.path}
-                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-all duration-300 group rounded-xl ${
-                        isActivePath(item.path)
+                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-all duration-300 group rounded-xl ${isActivePath(item.path)
                           ? "text-yellow-600 bg-yellow-50"
                           : "text-gray-950 hover:text-gray-900 hover:bg-gray-100/50"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`transition-colors duration-300 ${
-                          isActivePath(item.path)
+                        className={`transition-colors duration-300 ${isActivePath(item.path)
                             ? "text-yellow-600"
                             : "text-gray-950 group-hover:text-yellow-500"
-                        }`}
+                          }`}
                       >
                         {item.icon}
                       </span>
@@ -159,18 +157,16 @@ const Navbar: React.FC = () => {
                     <Link
                       key={item.name}
                       to={item.path}
-                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-all duration-300 group rounded-xl ${
-                        isActivePath(item.path)
+                      className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium transition-all duration-300 group rounded-xl ${isActivePath(item.path)
                           ? "text-yellow-600 bg-yellow-50"
                           : "text-gray-950 hover:text-gray-900 hover:bg-gray-100/50"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`transition-colors duration-300 ${
-                          isActivePath(item.path)
+                        className={`transition-colors duration-300 ${isActivePath(item.path)
                             ? "text-yellow-600"
                             : "text-gray-950 group-hover:text-yellow-500"
-                        }`}
+                          }`}
                       >
                         {item.icon}
                       </span>
@@ -222,7 +218,7 @@ const Navbar: React.FC = () => {
                       to="/signup"
                       className="px-4 py-2 text-sm bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                     >
-                      Sign Up
+                      Create Profile
                     </Link>
                   </div>
                 )}
@@ -263,9 +259,8 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Dropdown Menu */}
           <div
-            className={`transition-all duration-300 ease-in-out overflow-hidden ${
-              isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-            }`}
+            className={`transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              }`}
           >
             <div className="border-t border-gray-200/30 bg-white/90 backdrop-blur-md">
               <div className="py-4 space-y-2 px-4">
@@ -313,7 +308,7 @@ const Navbar: React.FC = () => {
                       className="px-4 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-semibold rounded-xl text-center shadow-lg transition-all duration-300"
                       onClick={toggleMenu}
                     >
-                      Sign Up
+                      Create Profile
                     </Link>
                   </div>
                 )}
@@ -335,25 +330,22 @@ const Navbar: React.FC = () => {
                   <Link
                     key={item.name}
                     to={item.path}
-                    className={`relative flex flex-col items-center space-y-1 px-3 py-2 transition-all duration-300 ${
-                      isActive
+                    className={`relative flex flex-col items-center space-y-1 px-3 py-2 transition-all duration-300 ${isActive
                         ? "text-yellow-600 bg-yellow-50 rounded-xl"
                         : "text-gray-600 hover:text-gray-800 hover:bg-gray-100/50 rounded-xl"
-                    }`}
+                      }`}
                   >
                     <div
-                      className={`transition-all duration-300 ${
-                        isActive ? "scale-125" : "scale-100"
-                      }`}
+                      className={`transition-all duration-300 ${isActive ? "scale-125" : "scale-100"
+                        }`}
                     >
                       {item.icon}
                     </div>
                     <span
-                      className={`text-xs font-medium transition-all duration-300 ${
-                        isActive
+                      className={`text-xs font-medium transition-all duration-300 ${isActive
                           ? "text-yellow-700 font-semibold"
                           : "text-gray-600"
-                      }`}
+                        }`}
                     >
                       {item.name}
                     </span>

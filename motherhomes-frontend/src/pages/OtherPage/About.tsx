@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
+import abouutImage from "../../assets/abouut.png";
 
 function About() {
   const navigate = useNavigate();
@@ -118,13 +119,10 @@ function About() {
             About Mother Homes
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            Creating <span className="text-yellow-400">Communities</span>
-            <br />
-            Building <span className="text-yellow-400">Homes</span>
+            Trusted PG & Rental <span className="text-yellow-400">Platform</span> Across NCR.
           </h1>
           <p className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            We're on a mission to provide comfortable, affordable, and
-            well-maintained PG accommodations that feel like home.
+            Providing verified, affordable, and fully furnished accommodations for students and working professionals.
           </p>
         </div>
       </div>
@@ -133,24 +131,47 @@ function About() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
+            <div className="text-center p-4">
               <div className="text-4xl font-bold text-slate-800 mb-2">2023</div>
-              <div className="text-gray-600">Founded</div>
+              <div className="text-gray-600 text-sm">Founded with a mission to remove brokerage headaches.</div>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4">
               <div className="text-4xl font-bold text-slate-800 mb-2">
                 1000+
               </div>
-              <div className="text-gray-600">Happy Residents</div>
+              <div className="text-gray-600 text-sm">Tenants successfully shifted</div>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4">
               <div className="text-4xl font-bold text-slate-800 mb-2">15+</div>
-              <div className="text-gray-600">Locations</div>
+              <div className="text-gray-600 text-sm">Active PG & rental clusters</div>
             </div>
-            <div className="text-center">
+            <div className="text-center p-4">
               <div className="text-4xl font-bold text-slate-800 mb-2">98%</div>
-              <div className="text-gray-600">Satisfaction Rate</div>
+              <div className="text-gray-600 text-sm">Positive tenant feedback</div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Block */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-yellow-400">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-slate-900 mb-6">
+            Ready to Find Your PG?
+          </h2>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <button
+              onClick={() => navigate("/viewlisting")}
+              className="px-8 py-3 bg-white text-slate-900 font-bold rounded-lg hover:bg-slate-100 transition-all shadow-md"
+            >
+              🟢 Book Free Visit
+            </button>
+            <button
+              onClick={() => navigate("/viewlisting")}
+              className="px-8 py-3 bg-slate-900 text-white font-bold rounded-lg hover:bg-slate-800 transition-all shadow-md"
+            >
+              🔵 Browse Available Rooms
+            </button>
           </div>
         </div>
       </section>
@@ -167,22 +188,13 @@ function About() {
             </h2>
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
               <p>
-                Mother Homes was founded in 2023 with a simple vision: to create
-                living spaces that combine comfort, convenience, and community.
-                We recognized the challenges that students and young
-                professionals face when moving to a new city - from finding safe
-                accommodations to managing daily chores.
+                It started in 2023. We saw students and professionals struggling with high brokerage, hidden charges, and scams when moving to a new city.
               </p>
               <p>
-                What started as a single PG with 10 rooms has now grown into a
-                chain of premium PG accommodations across multiple cities,
-                serving thousands of residents. Our growth is a testament to our
-                commitment to quality and customer satisfaction.
+                The frustration of dealing with fake listings and unkempt promises was real. We realized that finding a safe home shouldn't be this hard.
               </p>
               <p>
-                Today, Mother Homes stands as a trusted name in the PG
-                accommodation sector, known for our well-maintained facilities,
-                responsive management, and vibrant community atmosphere!
+                So, we decided to fix it. Mother Homes was born with a single mission: to provide a verified, transparent, and broker-free platform where your peace of mind comes first. Today, we are proud to be the trusted choice for thousands across NCR.
               </p>
             </div>
             <div className="mt-8">
@@ -197,7 +209,7 @@ function About() {
           <div className="relative">
             <div className="aspect-w-4 aspect-h-3 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3"
+                src={abouutImage}
                 alt="Mother Homes Building"
                 className="w-full h-full object-cover "
               />

@@ -14,6 +14,7 @@ import Calendar from "./pages/Calendar";
 import AllListing from "./pages/Tables/ListingTable";
 import AppointmentTables from "./pages/Tables/AppointmentTable";
 import Addlisting from "./pages/Forms/ListingForm";
+import BulkUploadListing from "./pages/Forms/BulkUploadListing";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
@@ -34,6 +35,9 @@ import MyFlatsTable from "./pages/Tables/TenantInfoTable";
 import AdminTable from "./pages/Tables/AdminTable";
 import { LoadingProvider } from "./context/LoadingContext";
 import RegisteredUserTable from "./pages/Tables/RegisteredUserTable";
+import InquiryModal from "./components/InquiryModal";
+import MobileStickyBar from "./components/MobileStickyBar";
+import { useState, useEffect } from "react";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -53,12 +57,23 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
 };
 
 export default function App() {
+  const [showInquiryModal, setShowInquiryModal] = useState(false);
+
+  useEffect(() => {
+    const handleOpenInquiry = () => {
+      setShowInquiryModal(true);
+    };
+
+    window.addEventListener("open-inquiry-modal", handleOpenInquiry);
+    return () =>
+      window.removeEventListener("open-inquiry-modal", handleOpenInquiry);
+  }, []);
+
   return (
     <LoadingProvider>
       <Router>
         <ScrollToTop />
         <Routes>
-
           <Route path="/" element={<HomePage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/resetpass" element={<Reset />} />
@@ -70,7 +85,7 @@ export default function App() {
 
           {/* Protected Routes */}
           <Route element={<AppLayout />}>
-            {/* Common routes for all authenticated users */}
+            {/* ... other routes ... */}
             <Route
               path="/profile"
               element={
@@ -96,7 +111,7 @@ export default function App() {
               }
             />
 
-            {/* Admin-only routes (now also accessible to superadmin) */}
+            {/* Admin-only routes */}
             <Route
               path="/dashboard"
               element={
@@ -134,6 +149,14 @@ export default function App() {
               element={
                 <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
                   <Addlisting />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bulk-upload"
+              element={
+                <ProtectedRoute allowedRoles={["superadmin"]}>
+                  <BulkUploadListing />
                 </ProtectedRoute>
               }
             />
@@ -222,6 +245,11 @@ export default function App() {
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <MobileStickyBar />
+        <InquiryModal
+          isOpen={showInquiryModal}
+          onClose={() => setShowInquiryModal(false)}
+        />
       </Router>
     </LoadingProvider>
   );

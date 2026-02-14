@@ -15,7 +15,7 @@ import dotenv from "dotenv";
 import userRouter from './routes/User.routes.js';
 import { sendOtpEmail } from './common/services/email.js';
 import asyncHandler from './utils/asyncHandler.js';
-  import User from './entities/User.entitiy.js';
+import User from './entities/User.entitiy.js';
 //   import { tenantSwaggerDefinitions } from './Schema/tenant.swagger.js';
 import tenantRouter from './routes/Tenant.routes.js';
 // import { notificationSwaggerDefinitions } from './Schema/Notification.swagger.js';
@@ -104,8 +104,8 @@ app.get('/', (_req: Request, res: Response) => {
 
 
 app.use("/api/auth", authRouter);
-app.use("/api/property", propertyRouter); 
-app.use("/api/amentiesservice", router); 
+app.use("/api/property", propertyRouter);
+app.use("/api/amentiesservice", router);
 app.use("/api/appointments", appointmentRouter);
 app.use("/api/user", userRouter);
 app.use("/api/tenant", tenantRouter);
@@ -115,76 +115,93 @@ app.use("/api", targetRouter);
 app.use("/api", dashboardRouter);
 
 
-app.post("/api/sendemail",asyncHandler( async (req: Request, res: Response) => {
+app.post("/api/sendemail", asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
-  User.deleteOne({email})
+
   try {
-    
-    
     if (!email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Email is required" 
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
       });
     }
 
-   
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+
+    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-User.create({email,otp});
-    
+    console.log(`Generated OTP for ${email}: ${otp}`); // Log OTP for debugging/verification
+
+    if (existingUser) {
+      // If user exists and has a password, they are already fully registered
+      if (existingUser.password) {
+        return res.status(400).json({
+          success: false,
+          message: "User already registered. Please sign in."
+        });
+      }
+
+      // If user exists but incomplete (no password), update OTP
+      existingUser.otp = otp;
+      await existingUser.save();
+    } else {
+      // Create new user with email and OTP
+      await User.create({ email, otp });
+    }
+
     await sendOtpEmail(email, otp);
 
-    return res.status(200).json({ 
-      success: true, 
-      message: "OTP sent successfully" 
+    return res.status(200).json({
+      success: true,
+      message: "OTP sent successfully"
     });
 
   } catch (error: any) {
-    User.deleteOne({email})
     console.error("Error sending email:", error);
-    return res.status(500).json({ 
-      success: false, 
-      message: error.message || "Failed to send OTP email" 
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to send OTP email"
     });
   }
 }));
-app.post("/api/resetsendemail",asyncHandler( async (req: Request, res: Response) => {
+app.post("/api/resetsendemail", asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
   try {
-    
-    
+
+
     if (!email) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Email is required" 
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
       });
     }
 
-   
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-ResetPassModel.create({email,otp});
-    
+    ResetPassModel.create({ email, otp });
+
     await sendOtpEmail(email, otp);
 
-    return res.status(200).json({ 
-      success: true, 
-      message: "OTP sent successfully" 
+    return res.status(200).json({
+      success: true,
+      message: "OTP sent successfully"
     });
 
   } catch (error: any) {
-    User.deleteOne({email})
+    User.deleteOne({ email })
     console.error("Error sending email:", error);
-    return res.status(500).json({ 
-      success: false, 
-      message: error.message || "Failed to send OTP email" 
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to send OTP email"
     });
   }
 }));
 dbConnect().then(() => {
-     app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on http://0.0.0.0:${PORT}`);
-   console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
-});
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server listening on http://0.0.0.0:${PORT}`);
+    console.log(`Swagger docs at http://0.0.0.0:${PORT}/api/docs`);
+  });
 
 }).catch((error: Error) => {
   console.error("Database connection failed", error);

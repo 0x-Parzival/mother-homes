@@ -48,6 +48,7 @@ const Filter: React.FC<FilterProps> = ({
   };
 
   const handleSearch = () => {
+    window.dispatchEvent(new CustomEvent("open-inquiry-modal"));
     onFilter(filters);
   };
 

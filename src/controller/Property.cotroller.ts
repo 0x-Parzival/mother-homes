@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import PropertyServices from "../services/Property.service.js";
+import { BulkUploadService } from "../services/BulkUpload.service.js";
 import statusCode from "../common/constant/StatusCode.js";
 import errorResponse from "../common/constant/Error.js";
 
@@ -62,7 +63,7 @@ export default class PropertyController {
       // Remove existingImages from updateData if present
       if ('existingImages' in updateData) {
         delete updateData.existingImages;
-        
+
       }
 
       const updatedProperty = await propertyService.updateProperty(
@@ -137,6 +138,31 @@ export default class PropertyController {
         message: "Image deleted from property successfully",
       });
     } catch (error: any) {
+      return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+        error: errorResponse.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      });
+    }
+  }
+
+  async bulkUploadProperties(req: Request, res: Response) {
+    try {
+      if (!req.file) {
+        return res.status(statusCode.BAD_REQUEST).json({
+          error: errorResponse.BAD_REQUEST,
+          message: "No file uploaded",
+        });
+      }
+
+      const bulkUploadService = new BulkUploadService();
+      const result = await bulkUploadService.processExcelFile(req.file.buffer);
+
+      return res.status(statusCode.OK).json({
+        message: "Bulk upload processed",
+        data: result,
+      });
+    } catch (error: any) {
+      console.error("Error processing bulk upload:", error);
       return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
         error: errorResponse.INTERNAL_SERVER_ERROR,
         message: error.message,

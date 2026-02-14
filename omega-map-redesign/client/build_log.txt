@@ -1,0 +1,31 @@
+
+> omega-map-client@0.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 2 modules transformed.
+x Build failed in 346ms
+error during build:
+[vite:esbuild] Transform failed with 1 error:
+/home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/src/main.jsx:6:51: ERROR: Unexpected "!"
+file: /home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/src/main.jsx:6:51
+
+Unexpected "!"
+4  |  import './index.css'
+5  |  
+6  |  ReactDOM.createRoot(document.getElementById('root')!).render(
+   |                                                     ^
+7  |      <React.StrictMode>
+8  |          <App />
+
+    at failureErrorWithLog (/home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/node_modules/esbuild/lib/main.js:1472:15)
+    at /home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/node_modules/esbuild/lib/main.js:755:50
+    at responseCallbacks.<computed> (/home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/node_modules/esbuild/lib/main.js:622:9)
+    at handleIncomingPacket (/home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/node_modules/esbuild/lib/main.js:677:12)
+    at Socket.readFromStdout (/home/parzival/mother homes (10k)/homes-Backend-final/omega-map-redesign/client/node_modules/esbuild/lib/main.js:600:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)

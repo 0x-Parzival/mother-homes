@@ -78,7 +78,10 @@ function Card({ item }: CardProps) {
     }
   }, [currentImageIndex, displayImages.length]);
 
-  const handleClick = () => navigate(`/viewlisting/${item.id}`);
+  const handleClick = () => {
+    window.dispatchEvent(new CustomEvent("open-inquiry-modal"));
+    navigate(`/viewlisting/${item.id}`);
+  };
 
   const formatArea = (area: number) => {
     return area >= 10000 ? `${(area / 10000).toFixed(1)}K` : area.toString();
@@ -136,11 +139,10 @@ function Card({ item }: CardProps) {
                   e.stopPropagation();
                   setCurrentImageIndex(index);
                 }}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentImageIndex
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentImageIndex
                     ? "bg-white w-6"
                     : "bg-white/60 hover:bg-white/80 w-2"
-                }`}
+                  }`}
               />
             ))}
           </div>

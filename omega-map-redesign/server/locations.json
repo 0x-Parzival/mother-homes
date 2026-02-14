@@ -1,0 +1,431 @@
+[
+    {
+        "id": 1,
+        "name": "Anfi Tauro House I - Bungalow 38",
+        "coords": [
+            27.7992343,
+            -15.7173837
+        ],
+        "address": "Anfi Tauro House I - Bungalow 38",
+        "link": "https://www.omega365.com/advantage/holiday-houses/anfi-tauro-house-i",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/b53b3b87-fff5-4324-802a-948f589f3150/IMG_001_CROP.JPG,IMG_001_CROP.JPG",
+        "description": "Beautiful bungalow located in the scenic Anfi Tauro area.",
+        "country": "Spain"
+    },
+    {
+        "id": 2,
+        "name": "Anfi Tauro House II - Bungalow 37",
+        "coords": [
+            27.7992343,
+            -15.7173837
+        ],
+        "address": "Anfi Tauro House II - Bungalow 37",
+        "link": "https://www.omega365.com/advantage/holiday-houses/anfi-tauro-house-ii",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/3fbc7926-f20b-4c77-9678-9800fa8b6dda/anfi-tauro-ii.jpg",
+        "description": "A cozy bungalow perfect for a relaxing vacation.",
+        "country": "Spain"
+    },
+    {
+        "id": 3,
+        "name": "Anfi Tauro House III - Bungalow 39",
+        "coords": [
+            27.7992343,
+            -15.7173837
+        ],
+        "address": "Anfi Tauro House III - Bungalow 39",
+        "link": "https://www.omega365.com/advantage/holiday-houses/anfi-tauro-house-iii-31427",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/cf342aab-5375-4651-9532-a11bff3fb087/bungalow-39.jpg",
+        "description": "Luxurious bungalow with stunning views.",
+        "country": "Spain"
+    },
+    {
+        "id": 4,
+        "name": "Anfi Tauro House IV - Bungalow 27",
+        "coords": [
+            27.7992343,
+            -15.7173837
+        ],
+        "address": "Anfi Tauro House IV - Bungalow 27",
+        "link": "https://www.omega365.com/advantage/holiday-houses/anfi-tauro-house-iv",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/6634ca27-f206-4b14-8b9f-1c91545c2c32/MicrosoftTeams-image-(6)-(1).png",
+        "description": "Spacious bungalow with modern amenities.",
+        "country": "Spain"
+    },
+    {
+        "id": 5,
+        "name": "Barcelona Apartment",
+        "coords": [
+            41.3861096,
+            2.1747067
+        ],
+        "address": "Barcelona Apartment",
+        "link": "https://www.omega365.com/advantage/holiday-houses/barcelona-apartment",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/429cd609-35de-44b9-9208-020d214ff367/img-0424.jpg",
+        "description": "Modern apartment located in the heart of Barcelona.",
+        "country": "Spain"
+    },
+    {
+        "id": 6,
+        "name": "Bømlo Cabin",
+        "coords": [
+            59.76281,
+            5.163342
+        ],
+        "address": "Bømlo Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/bomlo-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/b807051a-24c4-43c7-b0d9-e717455aaeec/bomlo-rorbu.jpg",
+        "description": "With a spacious interior and views of the sea, Bømlo Cabin is well-suited for a family holiday. The maritime-inspired design and quiet surroundings make it an inviting place to unwind.",
+        "country": "Norway"
+    },
+    {
+        "id": 7,
+        "name": "Britahuset Nedstrand",
+        "coords": [
+            59.3453314,
+            5.8572152
+        ],
+        "address": "Britahuset Nedstrand",
+        "link": "https://www.omega365.com/advantage/holiday-houses/britahuset-nedstrand",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/e98f2822-0c0b-4c77-b832-b5b2511a2b7f/IMG_1019.jpg",
+        "description": "Situated in the center of Nedstrand, Britahuset offers easy access to local activities and nature. The cabin includes a private garden and boat, making it ideal for enjoying the water.",
+        "country": "Norway"
+    },
+    {
+        "id": 8,
+        "name": "Geilo Apartment",
+        "coords": [
+            60.50836,
+            8.227918
+        ],
+        "address": "Geilo Apartment",
+        "link": "https://www.omega365.com/advantage/holiday-houses/geilo-apartment",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/a9b54350-319e-45f0-91d2-1829c77303b5/651933783727.jpg",
+        "description": "Stylish apartment in the popular ski resort of Geilo.",
+        "country": "Norway"
+    },
+    {
+        "id": 9,
+        "name": "Hafjell Cabin",
+        "coords": [
+            61.2312614,
+            10.455447
+        ],
+        "address": "Hafjell Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/hafjell-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/f0698ed3-8e39-49a0-8006-ec6d4e5c9656/MicrosoftTeams-image-(2).png",
+        "description": "Comfortable cabin in the Hafjell ski resort.",
+        "country": "Norway"
+    },
+    {
+        "id": 10,
+        "name": "Hemsedal Cabin",
+        "coords": [
+            60.8631412,
+            8.4924553
+        ],
+        "address": "Hemsedal Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/hemsedal-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/fe6f8f1e-3f2b-4661-9391-bfe3cb298a30/_IMG_3721.jpg",
+        "description": "Rustic cabin in the beautiful Hemsedal area.",
+        "country": "Norway"
+    },
+    {
+        "id": 11,
+        "name": "Horseshoe Bay Resort",
+        "coords": [
+            30.5470142,
+            -98.3600176
+        ],
+        "address": "Horseshoe Bay Resort",
+        "link": "https://www.omega365.com/advantage/holiday-houses/horseshoe-bay-resort",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/b1065dce-cde8-4783-b5a0-2e316c7925e7/001.jpg",
+        "description": "Luxury resort with stunning views and amenities.",
+        "country": "USA"
+    },
+    {
+        "id": 12,
+        "name": "Hovden cabin \u2013 Nedre Hovdenut",
+        "coords": [
+            59.569043,
+            7.344001
+        ],
+        "address": "Hovden cabin \u2013 Nedre Hovdenut",
+        "link": "https://www.omega365.com/advantage/holiday-houses/hovden-cabin-nedre-hovdenut-32839",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/977eb06f-0367-4906-a46d-587c6282adba/1-589-140015423-2.jpg",
+        "description": "Cozy cabin with excellent skiing facilities.",
+        "country": "Norway"
+    },
+    {
+        "id": 13,
+        "name": "Hovden Cabin, Hartevatn",
+        "coords": [
+            59.53797,
+            7.360741
+        ],
+        "address": "Hovden Cabin, Hartevatn",
+        "link": "https://www.omega365.com/advantage/holiday-houses/hovden-cabin-hartevatn",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/79624d99-05ee-4d27-a0ac-09959763f859/Hovden-2.jpg",
+        "description": "Lakeside cabin with breathtaking views.",
+        "country": "Norway"
+    },
+    {
+        "id": 14,
+        "name": "Hovden Cabin, Slakteplassen",
+        "coords": [
+            59.5808345,
+            7.3905772
+        ],
+        "address": "Hovden Cabin, Slakteplassen",
+        "link": "https://www.omega365.com/advantage/holiday-houses/hovden-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/cd1b2168-f4b2-4a8d-bfd0-a2a8a52699b5/0Hytta-Hovden-Slakteplassen-1_16-9.jpg",
+        "description": "Located in a sunny spot at Lundane, just north of Hovden center, Hovden Cabin provides great views and direct access to nature. A good choice for those looking to spend time outdoors in a mountain setting.",
+        "country": "Norway"
+    },
+    {
+        "id": 15,
+        "name": "Humber Valley Resort Chalet",
+        "coords": [
+            49.0117375,
+            -57.6885751
+        ],
+        "address": "Humber Valley Resort Chalet",
+        "link": "https://www.omega365.com/advantage/holiday-houses/humber-valley-resort",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/04ab1ba0-b3c8-438f-ba2d-8215443e6efa/001.jpg",
+        "description": "Luxurious chalet with stunning valley views.",
+        "country": "Canada"
+    },
+    {
+        "id": 16,
+        "name": "Kvie S\u00f8 - Holiday house",
+        "coords": [
+            55.7232392,
+            8.7757964
+        ],
+        "address": "Kvie S\u00f8 - Holiday house",
+        "link": "https://www.omega365.com/advantage/holiday-houses/kvie-so-denmark-vacation-house-32498",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/a5190eab-8bcc-4818-85ff-152cd8e2e725/1-p85019-outdoor-08.jpg",
+        "description": "Holiday house by the lake with serene surroundings.",
+        "country": "Denmark"
+    },
+    {
+        "id": 17,
+        "name": "La Cantera Resort and Spa",
+        "coords": [
+            29.602788,
+            -98.6225957
+        ],
+        "address": "La Cantera Resort and Spa",
+        "link": "https://www.omega365.com/advantage/holiday-houses/la-cantera-resort-and-spa",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/efaf291d-084b-440d-8590-dfa8324544a6/01Plaza-San-Saba-.jpg",
+        "description": "Elegant resort and spa with top-notch facilities.",
+        "country": "USA"
+    },
+    {
+        "id": 18,
+        "name": "La Joya Apartment C-1B",
+        "coords": [
+            36.512111,
+            -4.636944
+        ],
+        "address": "La Joya Apartment C-1B",
+        "link": "https://www.omega365.com/advantage/holiday-houses/la-joya-apartment-1b",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/4437e619-4bc9-4649-a94c-c5070dee2582/001.jpg",
+        "description": "Beautiful apartment with modern amenities.",
+        "country": "Spain"
+    },
+    {
+        "id": 19,
+        "name": "Lillehavn Holiday House",
+        "coords": [
+            57.9932577,
+            7.0894721
+        ],
+        "address": "Lillehavn Holiday House",
+        "link": "https://www.omega365.com/advantage/holiday-houses/lillehavn-holiday-house-32681",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/bf2fb20a-0caf-4e40-9ffe-8fcaf4c940c5/1-771-635506188.jpg",
+        "description": "Charming holiday house near the coast.",
+        "country": "Norway"
+    },
+    {
+        "id": 20,
+        "name": "Bang Sarey \u2013 House I",
+        "coords": [
+            12.742660310156019,
+            100.888502677254
+        ],
+        "address": "Nordic Tropical Resort, House 58, 190, Moo 8, Soi Tesaban 19, Bang Sarey, Sattahip, Chonburi 20180, Thailand",
+        "link": "https://www.omega365.com/advantage/holiday-houses/nordic-tropical-resort",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/52215cb9-1d72-465a-ab4e-25bde67b71ce/001.jpg",
+        "description": "Omega's house in Bang Sarey is located just a couple of hours south of Bangkok, surrounded by beautiful beaches and popular attractions.",
+        "country": "Thailand"
+    },
+    {
+        "id": 21,
+        "name": "Oppdal Cabin, Vangshaug",
+        "coords": [
+            62.6086738,
+            9.6512688
+        ],
+        "address": "Oppdal Cabin, Vangshaug",
+        "link": "https://www.omega365.com/advantage/holiday-houses/oppdal-cabin-31936",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/3de7d328-6efd-411b-aa71-cb2ebb388cd7/1-snapchat-1153291331.jpg",
+        "description": "Cozy cabin with mountain views.",
+        "country": "Norway"
+    },
+    {
+        "id": 22,
+        "name": "Sirdal Apartment",
+        "coords": [
+            58.9123776,
+            6.8592741
+        ],
+        "address": "Sirdal Apartment",
+        "link": "https://www.omega365.com/advantage/holiday-houses/sirdal-apartment",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/bbf99a3a-c38d-4720-b87b-823944137a3c/001image000011.jpeg",
+        "description": "Modern apartment in the heart of Sirdal.",
+        "country": "Norway"
+    },
+    {
+        "id": 23,
+        "name": "Sirdal Cabin 2",
+        "coords": [
+            58.9136697,
+            6.8897007
+        ],
+        "address": "Sirdal Cabin 2",
+        "link": "https://www.omega365.com/advantage/holiday-houses/sirdal-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/5a057ee9-e0a2-4236-aea3-0c64f451f2d9/IMG_001.jfif",
+        "description": "Comfortable cabin with easy access to ski slopes.",
+        "country": "Norway"
+    },
+    {
+        "id": 24,
+        "name": "Sirdal, \u00c5dneram - Cabin",
+        "coords": [
+            59.0174774,
+            6.9447349
+        ],
+        "address": "Sirdal, \u00c5dneram - Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/sirdal-cabin-32638",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/fb740ae0-4dd1-4673-b660-8329c8e0aa53/1-896-1136147748.jpg",
+        "description": "Rustic cabin in \u00c5dneram with stunning views.",
+        "country": "Norway"
+    },
+    {
+        "id": 25,
+        "name": "V\u00e5gslid Cabin",
+        "coords": [
+            59.777289,
+            7.325345
+        ],
+        "address": "V\u00e5gslid Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/vagslid-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/22236866-5fa1-46a9-a3eb-f5f5cfd56a1f/IMG_002.jpg",
+        "description": "Charming cabin with modern facilities in V\u00e5gslid.",
+        "country": "Norway"
+    },
+    {
+        "id": 26,
+        "name": "V\u00e5gslid Svartufs Cabin",
+        "coords": [
+            59.7770278,
+            7.3363611
+        ],
+        "address": "V\u00e5gslid Svartufs Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/vaagslid-svartufs-30418",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/f5db46ee-f826-4ebf-a862-5423ecd61d7b/hytta.jpg",
+        "description": "Cozy cabin with scenic views in V\u00e5gslid.",
+        "country": "Norway"
+    },
+    {
+        "id": 27,
+        "name": "Voss - Cabin",
+        "coords": [
+            60.8570827,
+            6.4849712
+        ],
+        "address": "Voss - Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/voss-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/f06d1a06-8360-4964-b2bb-842efac6415e/IMG_001.jpg",
+        "description": "Charming cabin in the picturesque town of Voss.",
+        "country": "Norway"
+    },
+    {
+        "id": 28,
+        "name": "Vr\u00e5dal Cabin",
+        "coords": [
+            59.324583,
+            8.346889
+        ],
+        "address": "Vr\u00e5dal Cabin",
+        "link": "https://www.omega365.com/advantage/holiday-houses/vradal-cabin",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/141a7b9c-5387-44b5-ae79-d2865437a68d/IMG_4787.JPEG",
+        "description": "Spacious cabin with lake views in Vr\u00e5dal.",
+        "country": "Norway"
+    },
+    {
+        "id": 29,
+        "name": "B\u00f8mlo Seahouse",
+        "coords": [
+            59.75,
+            5.17
+        ],
+        "address": "B\u00f8mlo Seahouse",
+        "link": "https://www.omega365.com/advantage/holiday-houses/bomlo-seahouse",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/b807051a-24c4-43c7-b0d9-e717455aaeec/bomlo-rorbu.jpg",
+        "description": "Wake up to the sound of the waves at B\u00f8mlo Seahouse, a relaxing getaway by the sea. With its inviting interior, direct waterfront access, and scenic views, this is an ideal spot to unwind and enjoy the coastal surroundings.",
+        "country": "Norway"
+    },
+    {
+        "id": 30,
+        "name": "Trysnes Brygge Apartment",
+        "coords": [
+            59.125,
+            10.988
+        ],
+        "address": "Trysnes Brygge Apartment",
+        "link": "https://www.omega365.com/advantage/holiday-houses/trysnes-brygge-apartment",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/75240612-dc2a-4f5d-b663-8eb581f1e380/Trysnes,%20fremside.jpg",
+        "description": "This two-story apartment at Trysnes Brygge features a fully equipped kitchen and a private balcony with views of the marina. A comfortable choice for those looking for a mix of convenience and a waterfront setting.",
+        "country": "Norway"
+    },
+    {
+        "id": 31,
+        "name": "Skjebergkilen, Sarpsborg",
+        "coords": [
+            59.278,
+            11.11
+        ],
+        "address": "Skjebergkilen, Sarpsborg",
+        "link": "https://www.omega365.com/advantage/holiday-houses/skjebergkilen-sarpsborg",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/skjebergkilen-sarpsborg.jpg",
+        "description": "Skjebergkilen offers a combination of coastal and countryside experiences. Guests can enjoy swimming, hiking, or taking trips to nearby towns like Fredrikstad and Halden, or even across the border to Sweden.",
+        "country": "Norway"
+    },
+    {
+        "id": 32,
+        "name": "Myrkdalen Apartment",
+        "coords": [
+            60.85720328341568,
+            6.491587399999999
+        ],
+        "address": "Skabotn building, Torggata 3, 5713 Myrkdalen, Skabotn leilighetsbygg",
+        "link": "https://www.omega365.com/advantage/holiday-houses/skabotn-apartment-35900",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/afc10fcd-fdf9-4b9a-a670-4428fed30fd5/Bilde%20bygg,%20redigert.jpg",
+        "description": "Make family memories in Myrkdalen, Voss! This cozy apartment is your gateway to fun for everyone \u2014 skiing, hiking, and endless adventures right outside your door.",
+        "country": "Norway"
+    },
+    {
+        "id": 33,
+        "name": "Sauda Apartment",
+        "coords": [
+            59.62424112846162,
+            6.244808339669525
+        ],
+        "address": "Svandalsvegen 243, 4208 Saudasj\u00f8en",
+        "link": "https://www.omega365.com/nb-no/advantage/holiday-houses/apartment-svandalen-lodge-35250",
+        "image": "https://www.omega365.com/api/file/view/stbv_Content_ItemsFiles/b09971b4-60c3-454c-afd9-15068c1e6d7e/Sauda-2-21.jpg",
+        "description": "Modern apartment accommodating six with a central location near Sauda Skisenter.",
+        "country": "Norway"
+    }
+]

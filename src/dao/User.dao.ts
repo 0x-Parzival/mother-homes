@@ -19,14 +19,24 @@ export default class UserDao {
       // Check if user already exists
       const existingUser = await this.user.findOne({ email: userData.email });
       if (existingUser) {
-        throw new Error("User already exists");
+        // If user exists and has a password, they are already registered
+        if (existingUser.password) {
+          throw new Error("User already exists");
+        }
+        // If user exists but no password (incomplete registration), update them
+        const updatedUser = await this.user.findOneAndUpdate(
+          { email: userData.email },
+          userData,
+          { new: true }
+        );
+        return updatedUser;
       }
 
       const data = await this.user.create(userData);
       return data;
     } catch (error) {
       logger.error("Failed user creation", error);
-      throw new Error("Failed user creation");
+      throw error; // Re-throw the specific error
     }
   }
   async DeleteUser(email: any) {

@@ -26,8 +26,11 @@ const PropertyCard: React.FC<PropertyCardProps> = (prop) => {
 
   return (
     <div
-      onClick={() => navigate(`/viewlisting/${propertyId}`)}
-      className="relative w-full h-80 rounded-xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300 ease-in-out"
+      onClick={() => {
+        window.dispatchEvent(new CustomEvent("open-inquiry-modal"));
+        navigate(`/viewlisting/${propertyId}`);
+      }}
+      className="relative w-full h-80 rounded-xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-transform duration-300 ease-in-out cursor-pointer"
     >
       {/* Background Image */}
       <img
@@ -44,13 +47,12 @@ const PropertyCard: React.FC<PropertyCardProps> = (prop) => {
         {tags.map((tag, index) => (
           <span
             key={index}
-            className={`px-2 py-1 text-xs font-semibold rounded-xl ${
-              tag === "FOR SALE"
+            className={`px-2 py-1 text-xs font-semibold rounded-xl ${tag === "FOR SALE"
                 ? "bg-green-600 text-white"
                 : tag === "FOR RENT"
-                ? "bg-blue-600 text-white"
-                : "bg-yellow-400 text-black"
-            }`}
+                  ? "bg-blue-600 text-white"
+                  : "bg-yellow-400 text-black"
+              }`}
           >
             {tag}
           </span>
