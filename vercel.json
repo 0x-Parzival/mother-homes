@@ -13,38 +13,36 @@
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "src/app.ts"
+      "src": "/api/(.*)",
+      "dest": "src/app.ts"
     },
     {
-      "source": "/api",
-      "destination": "src/app.ts"
+      "src": "/api",
+      "dest": "src/app.ts"
     },
     {
-      "source": "/carousel_deployment/(.*)",
-      "destination": "/motherhomes-frontend/carousel_deployment/$1"
+      "src": "/carousel_deployment/(.*)",
+      "dest": "/motherhomes-frontend/carousel_deployment/$1",
+      "continue": true
     },
     {
-      "source": "/assets/(.*)",
-      "destination": "/motherhomes-frontend/assets/$1"
+      "src": "/assets/(.*)",
+      "dest": "/motherhomes-frontend/assets/$1",
+      "continue": true
     },
     {
-      "source": "/images/(.*)",
-      "destination": "/motherhomes-frontend/images/$1"
+      "src": "/images/(.*)",
+      "dest": "/motherhomes-frontend/images/$1",
+      "continue": true
     },
     {
-      "source": "/favicon.png",
-      "destination": "/motherhomes-frontend/favicon.png"
+      "handle": "filesystem"
     },
     {
-      "source": "/(.*\\.[^/.]+)",
-      "destination": "/motherhomes-frontend/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/motherhomes-frontend/index.html"
+      "src": "/(.*)",
+      "dest": "/motherhomes-frontend/index.html"
     }
   ]
 }
