@@ -340,6 +340,9 @@
 @media (max-width: 1024px) {
     .main-carousel-wrapper {
         height: auto;
+        /* Allow content to dictate height on mobile */
+        min-height: 100vh;
+        /* Ensure full screen coverage */
         overflow: visible;
     }
 
@@ -348,22 +351,29 @@
     }
 
     .split-left {
-        flex: 0 0 50vh;
+        flex: 0 0 45vh;
+        /* Reduce from 50vh to 45vh to give more space for text */
         width: 100%;
         position: relative;
     }
 
     .split-right {
         flex: 1;
-        padding: 2.5rem 1.5rem 5rem;
-        /* More padding at bottom for nav buttons if needed */
+        padding: 2rem 1.5rem 4rem;
+        /* Reduced top/bottom padding */
         background: #0a0a0a;
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
+        min-height: 55vh;
+        /* Ensure text area takes remaining space */
+        justify-content: flex-start;
+        /* Align content to top of text area */
     }
 
     .headline {
         font-size: 2.25rem !important;
+        margin-bottom: 1rem !important;
+        /* Tighter spacing */
     }
 
     .subtext {
@@ -376,15 +386,14 @@
         margin-bottom: 1.5rem !important;
     }
 
+    /* Adjust Navigation Buttons for Mobile */
     .nav-btn {
         width: 44px;
         height: 44px;
-        top: 25vh;
-        /* Center on the 50vh room part */
-        bottom: auto;
+        top: 22.5vh;
+        /* Center vertically in the 45vh room section */
         transform: translateY(-50%);
         background: rgba(0, 0, 0, 0.4);
-        /* Darker for room visibility */
     }
 
     .prev-btn {
@@ -397,8 +406,8 @@
 
     .dots-container {
         bottom: auto;
-        top: 45vh;
-        /* Near the bottom of the room part */
+        top: 40vh;
+        /* Position dots near bottom of the room section */
         z-index: 25;
     }
 }
@@ -409,17 +418,22 @@
     }
 
     .split-right {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem 3rem;
+        /* Even tighter padding on small phones */
     }
 
     .button-group-vertical {
+        width: 100%;
         max-width: 100%;
     }
 
     .cta-button-main,
     .cta-button-secondary {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
+        width: 100%;
+        /* Full width buttons on mobile */
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+        justify-content: center;
     }
 }
 
