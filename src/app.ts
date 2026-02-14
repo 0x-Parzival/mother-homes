@@ -31,6 +31,7 @@ import dashboardRouter from './routes/Dashboard.routes.js';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
@@ -43,7 +44,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(dashboardRouter);
+// app.use(dashboardRouter);
 
 const PORT: number = parseInt(process.env.PORT || "3000", 10);
 
@@ -91,7 +92,7 @@ const swaggerOptions = {
     ],
     ...combinedSwaggerDefinitions
   },
-  apis: [], 
+  apis: [],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -108,7 +109,7 @@ app.use(async (_req, _res, next) => {
   }
 });
 
-app.get('/', (_req: Request, res: Response) => {
+app.get('/api', (_req: Request, res: Response) => {
   res.send('Server is running with ES Modules!');
 });
 

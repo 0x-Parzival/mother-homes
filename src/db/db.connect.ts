@@ -7,10 +7,11 @@ const dbConnect = async () => {
     return;
   }
   try {
-    if (!process.env.URI) {
-      throw new Error("MongoDB URI is not defined in environment variables");
+    const uri = process.env.URI || process.env.MONGODB_URI || process.env.MONGO_URI;
+    if (!uri) {
+      throw new Error("MongoDB URI is not defined in environment variables (URI, MONGODB_URI, or MONGO_URI)");
     }
-    await mongoose.connect(`${process.env.URI}`);
+    await mongoose.connect(uri);
     logger.info("DB CONNECTED.......");
   } catch (error: any) {
     logger.debug(error);
