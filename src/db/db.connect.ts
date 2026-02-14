@@ -14,8 +14,8 @@ const dbConnect = async () => {
     logger.info("DB CONNECTED.......");
   } catch (error: any) {
     logger.debug(error);
-    logger.error("Unable to connect to DB");
-    throw new Error("Database connection failed");
+    logger.error("Unable to connect to DB:", error.message);
+    throw new Error(`Database connection failed: ${error.message}`);
   }
 };
 
