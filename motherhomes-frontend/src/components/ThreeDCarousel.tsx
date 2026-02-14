@@ -64,7 +64,7 @@ const DEFAULT_SLIDES: Slide[] = [
         }
     },
     {
-        roomPath: "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+        roomPath: "/carousel_deployment/ThreeJS-Room14/index.html",
         headline: <>Modern Living<br />Redefined</>,
         subtext: "Discover a space where luxury meets functionality, designed for the modern lifestyle.",
         features: [

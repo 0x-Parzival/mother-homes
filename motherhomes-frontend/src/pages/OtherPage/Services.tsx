@@ -32,7 +32,7 @@ const SERVICES_SLIDES = [
   },
   // 3. Security Services
   {
-    roomPath: "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+    roomPath: "/carousel_deployment/ThreeJS-Room14/index.html",
     headline: "Security Services",
     subtext: "Your safety is our top priority with 24/7 surveillance.",
     features: [
@@ -68,7 +68,7 @@ const SERVICES_SLIDES = [
   },
   // 6. Community Activities
   {
-    roomPath: "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+    roomPath: "/carousel_deployment/ThreeJS-Room14/index.html",
     headline: "Community Activities",
     subtext: "Engage with a vibrant community through regular events.",
     features: [
