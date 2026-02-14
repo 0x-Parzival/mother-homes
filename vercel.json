@@ -13,23 +13,23 @@
       }
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "src/app.ts"
+      "src": "/api/(.*)",
+      "dest": "src/app.ts"
     },
     {
-      "source": "/api",
-      "destination": "src/app.ts"
+      "src": "/api",
+      "dest": "src/app.ts"
     },
     {
-      "source": "/(.*)",
-      "destination": "/motherhomes-frontend/$1",
-      "check": true
+      "src": "/(.*)",
+      "dest": "/motherhomes-frontend/$1",
+      "continue": true
     },
     {
-      "source": "/(.*)",
-      "destination": "/motherhomes-frontend/index.html"
+      "src": "/(.*)",
+      "dest": "/motherhomes-frontend/index.html"
     }
   ]
 }
