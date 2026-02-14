@@ -23,6 +23,10 @@
       "dest": "src/app.ts"
     },
     {
+      "src": "/(.*)/(\\.git|node_modules)(/.*)?",
+      "status": 404
+    },
+    {
       "src": "/carousel_deployment/(.*)",
       "dest": "/motherhomes-frontend/carousel_deployment/$1",
       "continue": true
@@ -38,10 +42,20 @@
       "continue": true
     },
     {
+      "src": "/favicon.png",
+      "dest": "/motherhomes-frontend/favicon.png",
+      "continue": true
+    },
+    {
+      "src": "/abouut.png",
+      "dest": "/motherhomes-frontend/abouut.png",
+      "continue": true
+    },
+    {
       "handle": "filesystem"
     },
     {
-      "src": "/(.*)",
+      "src": "/((?!api|carousel_deployment|assets|images|favicon.png|abouut.png).*)",
       "dest": "/motherhomes-frontend/index.html"
     }
   ]
