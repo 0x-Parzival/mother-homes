@@ -4,24 +4,20 @@ import './ThreeDCarousel.css';
 
 const ThreeDCarousel: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const totalRooms = 3;
     const carouselRef = useRef<HTMLDivElement>(null);
-    const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const autoPlayTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-    // Paths to the iframes in public folder
+    // Consistent root-relative paths
     const roomPaths = [
         "/carousel_deployment/ThreeJS-Room01/index.html",
-        "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+        "/carousel_deployment/ThreeJS-Room14/index.html", // Fixed: removed dist/
         "/carousel_deployment/ThreeJS-Room05/index.html"
     ];
 
     const updateCarousel = (index: number) => {
         if (!carouselRef.current) return;
-
-        // Restore the "peek" shift effect from the original HTML
-        const shift = 0; // The user said "only the first room is visible", maybe they want NO shift now? 
-        // Actually, let's stick to 100% but ensure they don't shrink.
-        // If I use shift=15 like the original, it shows part of the next room.
         const offset = -index * 100;
         carouselRef.current.style.transform = `translateX(${offset}%)`;
 
@@ -31,9 +27,9 @@ const ThreeDCarousel: React.FC = () => {
             if (!contentWindow) return;
 
             if (i === index) {
-                contentWindow.postMessage({ type: 'resume' }, '*');
+                contentWindow.postMessage({ type: 'resume' }, window.location.origin);
             } else {
-                contentWindow.postMessage({ type: 'pause' }, '*');
+                contentWindow.postMessage({ type: 'pause' }, window.location.origin);
             }
         });
     };
@@ -51,7 +47,6 @@ const ThreeDCarousel: React.FC = () => {
         resetTimer();
     };
 
-
     const resetTimer = () => {
         if (autoPlayTimerRef.current) {
             clearInterval(autoPlayTimerRef.current);
@@ -68,6 +63,24 @@ const ThreeDCarousel: React.FC = () => {
         prevRoom();
         resetTimer();
     };
+
+    // Global mouse tracking for 3D parallax
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            const x = (e.clientX / window.innerWidth) * 2 - 1; // -1 to 1
+            const y = (e.clientY / window.innerHeight) * 2 - 1; // -1 to 1
+            setMousePos({ x, y });
+
+            // Send to active iframe for internal model parallax
+            const activeFrame = document.querySelector(`.room-wrapper:nth-child(${currentIndex + 1}) .room-frame`) as HTMLIFrameElement;
+            if (activeFrame && activeFrame.contentWindow) {
+                activeFrame.contentWindow.postMessage({ type: 'mousemove', x, y }, window.location.origin);
+            }
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, [currentIndex]);
 
     // Effect for index change updates
     useEffect(() => {
@@ -94,74 +107,85 @@ const ThreeDCarousel: React.FC = () => {
         };
     }, []);
 
+    // Calculate parallax styles for the ROOM WRAPPER (Low Intensity)
+    const getRoomParallaxStyle = (index: number) => {
+        if (index !== currentIndex) return {};
+        return {
+            transform: `perspective(1000px) rotateY(${mousePos.x * 3}deg) rotateX(${-mousePos.y * 3}deg)`,
+            transition: 'transform 0.2s ease-out'
+        };
+    };
+
+    // Calculate parallax styles for the CONTENT CARD (Higher Intensity)
+    const getCardParallaxStyle = (index: number) => {
+        if (index !== currentIndex) return {};
+        return {
+            transform: `perspective(1000px) translateZ(50px) rotateY(${mousePos.x * 8}deg) rotateX(${-mousePos.y * 8}deg)`,
+            transition: 'transform 0.1s ease-out'
+        };
+    };
+
     return (
-        <div style={{ position: 'relative', height: '100vh', width: '100%', overflow: 'hidden' }}>
+        <div className="main-carousel-wrapper">
             <div className="carousel-container" ref={carouselRef}>
                 {/* Room 1 */}
-                <div className="room-wrapper">
+                <div className="room-wrapper" style={getRoomParallaxStyle(0)}>
                     <iframe
                         className="room-frame"
                         src={roomPaths[0]}
                         title="Room 1"
                     />
-                    <div className="overlay-container room1-layout">
-                        <div className="room1-top">
-                            <div className="headline">Everything You Need. Nothing Extra to Buy.</div>
-                        </div>
-                        <div className="room1-left">
-                            <ul className="feature-list">
-                                <li className="feature-item"><span className="check-icon">✔</span> Premium Furnished Rooms</li>
-                                <li className="feature-item"><span className="check-icon">✔</span> High-Speed WiFi</li>
-                                <li className="feature-item"><span className="check-icon">✔</span> 24/7 CCTV Security</li>
-                                <li className="feature-item"><span className="check-icon">✔</span> Daily Cleaning</li>
-                                <li className="feature-item"><span className="check-icon">✔</span> Power Backup</li>
-                                <li className="feature-item"><span className="check-icon">✔</span> Student & Professional Friendly</li>
-                            </ul>
-                        </div>
-                        <div className="room1-bottom">
+                    <div className="overlay-container">
+                        <div className="glass-card" style={getCardParallaxStyle(0)} key={`r1-${currentIndex}`}>
+                            <div className="headline">Everything You Need. <br/>Nothing Extra to Buy.</div>
                             <div className="subtext">Fully furnished, secure, and hassle-free rooms for students & professionals.</div>
+                            <ul className="feature-grid">
+                                <li className="feature-item"><div className="feature-main">✔ Premium Furnished Rooms</div></li>
+                                <li className="feature-item"><div className="feature-main">✔ High-Speed WiFi</div></li>
+                                <li className="feature-item"><div className="feature-main">✔ 24/7 CCTV Security</div></li>
+                                <li className="feature-item"><div className="feature-main">✔ Daily Cleaning</div></li>
+                                <li className="feature-item"><div className="feature-main">✔ Power Backup</div></li>
+                                <li className="feature-item"><div className="feature-main">✔ Student Friendly</div></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
                 {/* Room 2 (Room 14) */}
-                <div className="room-wrapper">
+                <div className="room-wrapper" style={getRoomParallaxStyle(1)}>
                     <iframe
                         className="room-frame"
                         src={roomPaths[1]}
                         title="Room 2"
                     />
-                    <div className="overlay-container room2-layout">
-                        <div style={{ paddingLeft: '50px' }}>
-                            <br /><br /><br />
+                    <div className="overlay-container">
+                        <div className="glass-card" style={getCardParallaxStyle(1)} key={`r2-${currentIndex}`}>
                             <div className="headline">Everything You Need.<br />Move In Today.</div>
                             <div className="subtext">Fully furnished, secure, and productivity-ready rooms for students & professionals.</div>
-                        </div>
-                        <div style={{ paddingRight: '50px' }}>
-                            <ul className="feature-list">
-                                <li className="feature-item" style={{ display: 'block', marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ Fully Furnished Study Setup</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Ergonomic desk, storage cabinets & lighting included.</div>
+                            <ul className="feature-grid">
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ Study Setup</div>
+                                    <div className="feature-sub">Ergonomic desk & lighting.</div>
                                 </li>
-                                <li className="feature-item" style={{ display: 'block', marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ High-Speed WiFi</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Seamless browsing, meetings & streaming.</div>
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ Fast WiFi</div>
+                                    <div className="feature-sub">Seamless streaming & meetings.</div>
                                 </li>
-                                <li className="feature-item" style={{ display: 'block', marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ 24/7 CCTV Security</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Safe & monitored premises.</div>
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ 24/7 Security</div>
+                                    <div className="feature-sub">Safe & monitored premises.</div>
                                 </li>
-                                <li className="feature-item" style={{ display: 'block', marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ Daily Cleaning Service</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Always fresh, zero maintenance stress.</div>
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ Daily Cleaning</div>
+                                    <div className="feature-sub">Zero maintenance stress.</div>
                                 </li>
-                                <li className="feature-item" style={{ display: 'block', marginBottom: '20px' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ Power Backup</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Uninterrupted electricity.</div>
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ Power Backup</div>
+                                    <div className="feature-sub">Uninterrupted electricity.</div>
                                 </li>
-                                <li className="feature-item" style={{ display: 'block' }}>
-                                    <div style={{ fontWeight: 'bold', color: '#4ade80' }}>✔ Nutritious Meals Available</div>
-                                    <div style={{ fontSize: '0.9em', opacity: 0.8, marginLeft: '20px' }}>Healthy food without cooking hassle</div>
+                                <li className="feature-item">
+                                    <div className="feature-main">✔ Meals Available</div>
+                                    <div className="feature-sub">Healthy food options.</div>
                                 </li>
                             </ul>
                         </div>
@@ -169,9 +193,8 @@ const ThreeDCarousel: React.FC = () => {
                 </div>
 
                 {/* Room 3 (Room 05) */}
-                <div className="room-wrapper" style={{ background: '#000' }}>
+                <div className="room-wrapper" style={getRoomParallaxStyle(2)}>
                     <div className="room3-layout">
-                        {/* Left: 3D Room */}
                         <div className="split-left">
                             <iframe
                                 className="room-frame"
@@ -179,50 +202,47 @@ const ThreeDCarousel: React.FC = () => {
                                 title="Room 3"
                             />
                             <div className="gradient-overlay">
-                                <div style={{ fontSize: '1.5rem', fontWeight: 600 }}>Peaceful, Fully Furnished Private Room</div>
+                                <div className="room-label">Peaceful Private Room</div>
                             </div>
                         </div>
-                        {/* Right: Text Content */}
                         <div className="split-right">
-                            <div className="headline">Comfort. Safety. Zero Hassle.</div>
-                            <div className="subtext">Move into a fully furnished, secure and peaceful space designed for students & working professionals.</div>
+                            <div className="glass-card-transparent" style={getCardParallaxStyle(2)} key={`r3-${currentIndex}`}>
+                                <div className="headline">Comfort. Safety.<br/>Zero Hassle.</div>
+                                <div className="subtext">Move into a fully furnished, secure and peaceful space designed for you.</div>
 
-                            <ul className="feature-list" style={{ marginTop: '20px' }}>
-                                <li className="feature-item" style={{ marginBottom: '15px' }}>
-                                    <span className="check-icon">✔</span> <strong>Premium Furnished Bedroom</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Comfortable bed, storage & aesthetic interiors included.</span>
-                                </li>
-                                <li className="feature-item" style={{ marginBottom: '15px' }}>
-                                    <span className="check-icon">✔</span> <strong>24/7 CCTV Security</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Safe & monitored premises for peace of mind.</span>
-                                </li>
-                                <li className="feature-item" style={{ marginBottom: '15px' }}>
-                                    <span className="check-icon">✔</span> <strong>Daily Cleaning Service</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Fresh and hygienic environment.</span>
-                                </li>
-                                <li className="feature-item" style={{ marginBottom: '15px' }}>
-                                    <span className="check-icon">✔</span> <strong>Power Backup</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Uninterrupted electricity day & night.</span>
-                                </li>
-                                <li className="feature-item" style={{ marginBottom: '15px' }}>
-                                    <span className="check-icon">✔</span> <strong>High-Speed WiFi</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Stay connected without interruptions.</span>
-                                </li>
-                                <li className="feature-item">
-                                    <span className="check-icon">✔</span> <strong>24/7 Purified Water</strong><br />
-                                    <span style={{ fontSize: '0.9em', opacity: 0.7, marginLeft: '26px' }}>Safe drinking water always available.</span>
-                                </li>
-                            </ul>
+                                <ul className="feature-list-vertical">
+                                    <li className="feature-item" style={{marginBottom: '1rem'}}>
+                                        <div className="feature-main">✔ Premium Bedroom</div>
+                                        <div className="feature-sub">Comfortable bed & aesthetic interiors.</div>
+                                    </li>
+                                    <li className="feature-item" style={{marginBottom: '1rem'}}>
+                                        <div className="feature-main">✔ CCTV Security</div>
+                                        <div className="feature-sub">Safe monitored premises.</div>
+                                    </li>
+                                    <li className="feature-item" style={{marginBottom: '1rem'}}>
+                                        <div className="feature-main">✔ Daily Cleaning</div>
+                                        <div className="feature-sub">Fresh and hygienic environment.</div>
+                                    </li>
+                                    <li className="feature-item">
+                                        <div className="feature-main">✔ High-Speed WiFi</div>
+                                        <div className="feature-sub">Stay connected 24/7.</div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Arrow Controls */}
-            <div className="nav-btn prev-btn" onClick={handlePrev}>&#8249;</div>
-            <div className="nav-btn next-btn" onClick={handleNext}>&#8250;</div>
+            {/* Navigation Arrows */}
+            <div className="nav-btn prev-btn" onClick={handlePrev}>
+                <span className="arrow-icon">&#8249;</span>
+            </div>
+            <div className="nav-btn next-btn" onClick={handleNext}>
+                <span className="arrow-icon">&#8250;</span>
+            </div>
 
-            {/* Indicators (Dots) */}
+            {/* Indicators */}
             <div className="dots-container">
                 {[...Array(totalRooms)].map((_, i) => (
                     <div
@@ -235,6 +255,5 @@ const ThreeDCarousel: React.FC = () => {
         </div>
     );
 };
-
 
 export default ThreeDCarousel;
