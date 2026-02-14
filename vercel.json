@@ -27,10 +27,6 @@
       "status": 404
     },
     {
-      "src": "/carousel_deployment/(.*)",
-      "dest": "/motherhomes-frontend/public/carousel_deployment/$1"
-    },
-    {
       "src": "/assets/(.*)",
       "dest": "/motherhomes-frontend/assets/$1",
       "continue": true
