@@ -3,13 +3,64 @@
   "builds": [
     {
       "src": "src/app.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "motherhomes-frontend/public/carousel_deployment/**"
+        ]
+      }
+    },
+    {
+      "src": "motherhomes-frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "src/app.ts"
+    },
+    {
+      "src": "/api",
+      "dest": "src/app.ts"
+    },
+    {
+      "src": "/carousel_deployment/(.*)",
+      "dest": "src/app.ts"
+    },
+    {
+      "src": "/(.*)/(\\.git|node_modules)(/.*)?",
+      "status": 404
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/motherhomes-frontend/assets/$1",
+      "continue": true
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/motherhomes-frontend/images/$1",
+      "continue": true
+    },
+    {
+      "src": "/favicon.png",
+      "dest": "/motherhomes-frontend/favicon.png",
+      "continue": true
+    },
+    {
+      "src": "/abouut.png",
+      "dest": "/motherhomes-frontend/abouut.png",
+      "continue": true
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/((?!api|carousel_deployment|assets|images|favicon.png|abouut.png).*)",
+      "dest": "/motherhomes-frontend/index.html"
     }
   ]
 }

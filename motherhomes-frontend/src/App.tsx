@@ -37,6 +37,7 @@ import { LoadingProvider } from "./context/LoadingContext";
 import RegisteredUserTable from "./pages/Tables/RegisteredUserTable";
 import InquiryModal from "./components/InquiryModal";
 import MobileStickyBar from "./components/MobileStickyBar";
+import PersistentThreeDCarousel from "./components/PersistentThreeDCarousel";
 import { useState, useEffect } from "react";
 
 interface ProtectedRouteProps {
@@ -73,6 +74,7 @@ export default function App() {
     <LoadingProvider>
       <Router>
         <ScrollToTop />
+        <PersistentThreeDCarousel />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/signin" element={<SignIn />} />

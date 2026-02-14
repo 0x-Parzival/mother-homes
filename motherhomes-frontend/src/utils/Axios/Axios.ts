@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL:import.meta.env.VITE_BACKEND_URL, // Change this to your API base URL
+  baseURL: import.meta.env.VITE_BACKEND_URL || "/api", // Fallback to /api for unified deployment
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

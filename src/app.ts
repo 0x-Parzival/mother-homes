@@ -31,6 +31,7 @@ import dashboardRouter from './routes/Dashboard.routes.js';
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
@@ -43,7 +44,7 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-app.use(dashboardRouter);
+// app.use(dashboardRouter);
 
 const PORT: number = parseInt(process.env.PORT || "3000", 10);
 
@@ -91,12 +92,21 @@ const swaggerOptions = {
     ],
     ...combinedSwaggerDefinitions
   },
-  apis: [], 
+  apis: [],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 */
+
+
+
+
+
+// Serve 3D room files statically from the backend bundle
+// This is a fallback because Vercel static routing was failing
+// Placed BEFORE dbConnect to ensure they load even if DB is down
+app.use('/carousel_deployment', express.static(path.join(process.cwd(), 'motherhomes-frontend', 'public', 'carousel_deployment')));
 
 // Database connection middleware for production/serverless
 app.use(async (_req, _res, next) => {
@@ -108,9 +118,46 @@ app.use(async (_req, _res, next) => {
   }
 });
 
-app.get('/', (_req: Request, res: Response) => {
+app.get('/api', (_req: Request, res: Response) => {
   res.send('Server is running with ES Modules!');
 });
+
+// DEBUG: List files to find where the static assets are
+import fs from 'fs';
+import path from 'path';
+app.get('/api/debug-fs', (_req, res) => {
+  try {
+    const currentDir = process.cwd();
+    const parentDir = path.join(currentDir, '..');
+
+    const listDir1 = fs.readdirSync(currentDir);
+    let listDir2: string[] = [];
+    try { listDir2 = fs.readdirSync(parentDir); } catch (e) { }
+
+    let listFrontend: string[] = [];
+    try { listFrontend = fs.readdirSync(path.join(currentDir, 'motherhomes-frontend')); } catch (e) { }
+
+    let listFrontendDist: string[] = [];
+    try { listFrontendDist = fs.readdirSync(path.join(currentDir, 'motherhomes-frontend', 'dist')); } catch (e) { }
+
+    let listPublic: string[] = [];
+    try { listPublic = fs.readdirSync(path.join(currentDir, 'public')); } catch (e) { }
+
+    res.json({
+      currentDir,
+      parentDir,
+      filesInCurrent: listDir1,
+      filesInParent: listDir2,
+      filesInFrontend: listFrontend,
+      filesInFrontendDist: listFrontendDist,
+      filesInPublic: listPublic
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 app.use("/api/auth", authRouter);
 app.use("/api/property", propertyRouter);

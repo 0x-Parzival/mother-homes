@@ -66,7 +66,7 @@ export default function BulkUploadListing() {
                                 <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                                 <p className="text-xs text-gray-500">XLSX, XLS (MAX. 10MB)</p>
                             </div>
-                            <input id="dropzone-file" type="file" accepts=".xlsx, .xls" className="hidden" onChange={handleFileChange} />
+                            <input id="dropzone-file" type="file" accept=".xlsx, .xls" className="hidden" onChange={handleFileChange} />
                         </label>
                     </div>
                     {file && (

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script>
+        (function () {
+            var originalRAF = window.requestAnimationFrame;
+            var paused = false;
+            var heldCallback = null;
+
+            window.addEventListener('message', function (e) {
+                if (e.data && e.data.type === 'pause') {
+                    paused = true;
+                } else if (e.data && e.data.type === 'resume') {
+                    paused = false;
+                    if (heldCallback) {
+                        originalRAF(heldCallback);
+                        heldCallback = null;
+                    }
+                } else if (e.data && e.data.type === 'mousemove') {
+                    const remoteEvent = new CustomEvent('remote-mousemove', {
+                        detail: { x: e.data.x, y: e.data.y }
+                    });
+                    window.dispatchEvent(remoteEvent);
+                }
+            });
+
+            window.requestAnimationFrame = function (callback) {
+                if (paused) {
+                    heldCallback = callback;
+                    return;
+                }
+                return originalRAF(callback);
+            };
+        })();
+    </script>
+    <style>
+        body {
+            background-color: #1a1a1a !important;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            cursor: crosshair;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title></title>
+    <script defer="defer" src="bundle.2a8d46ec82376ee8fbd6.js"></script>
+    <link href="main.css" rel="stylesheet">
+</head>
+
+<body><canvas class="webgl"></canvas>
+    <script>
+        (function () {
+            window.addEventListener('load', () => {
+                const canvas = document.querySelector('canvas.webgl') || document.querySelector('canvas');
+                if (!canvas) return;
+
+                let hasClicked = false;
+
+                function syncRotation(x, y) {
+                    if (!hasClicked) {
+                        canvas.dispatchEvent(new MouseEvent('mousedown', {
+                            button: 0,
+                            buttons: 1,
+                            clientX: x,
+                            clientY: y,
+                            bubbles: true
+                        }));
+                        hasClicked = true;
+                    }
+
+                    canvas.dispatchEvent(new MouseEvent('mousemove', {
+                        button: 0,
+                        buttons: 1,
+                        clientX: x,
+                        clientY: y,
+                        bubbles: true
+                    }));
+                }
+
+                window.addEventListener('remote-mousemove', (e) => {
+                    const targetX = (e.detail.x + 1) * 0.5 * window.innerWidth;
+                    const targetY = (e.detail.y + 1) * 0.5 * window.innerHeight;
+                    syncRotation(targetX, targetY);
+                });
+
+                // Periodically reset mousedown to keep interaction "alive"
+                setInterval(() => { hasClicked = false; }, 3000);
+            });
+        })();
+    </script>
+</body>
+
+</html>

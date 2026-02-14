@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, ChevronRight, Home, IndianRupee } from 'lucide-react';
+import { Search, MapPin, ChevronRight } from 'lucide-react';
 import clsx from 'clsx';
 
 // Type definition based on Property interface
@@ -57,7 +57,7 @@ const LocationSidebar: React.FC<LocationSidebarProps> = ({ locations, selectedLo
         );
     };
 
-    const getCityIcon = (city: string) => {
+    const getCityIcon = (_city: string) => {
         // Simple mapping or just random flags/icons
         return '🏙️';
     };

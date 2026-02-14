@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
-import ThreeDCarousel from "../../components/ThreeDCarousel";
 
-const SERVICES_SLIDES = [
+
+export const SERVICES_SLIDES = [
   // 1. Accommodation Options
   {
     roomPath: "/carousel_deployment/ThreeJS-Room01/index.html",
@@ -32,7 +32,7 @@ const SERVICES_SLIDES = [
   },
   // 3. Security Services
   {
-    roomPath: "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+    roomPath: "/carousel_deployment/ThreeJS-Room14/index.html",
     headline: "Security Services",
     subtext: "Your safety is our top priority with 24/7 surveillance.",
     features: [
@@ -68,7 +68,7 @@ const SERVICES_SLIDES = [
   },
   // 6. Community Activities
   {
-    roomPath: "/carousel_deployment/ThreeJS-Room14/dist/index.html",
+    roomPath: "/carousel_deployment/ThreeJS-Room14/index.html",
     headline: "Community Activities",
     subtext: "Engage with a vibrant community through regular events.",
     features: [
@@ -185,13 +185,13 @@ function Services() {
         </div>
       )}
 
-      {/* Hero Section - Replaced with 3D Carousel */}
-      <div className="relative pt-20 h-screen bg-gray-900">
-        <ThreeDCarousel slides={SERVICES_SLIDES} />
+      {/* Hero Section - Spacer for Persistent Carousel */}
+      <div className="relative pt-20 h-screen bg-transparent pointer-events-none">
+        {/* Carousel is now global in App.tsx */}
       </div>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section className="py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -215,7 +215,7 @@ function Services() {
       </section>
 
       {/* Core Services Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
+      <section className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
         <div className="text-center mb-16">
           <div className="inline-flex items-center px-4 py-2 bg-yellow-400/10 border border-yellow-400/20 rounded-full text-yellow-400 text-sm font-medium mb-4">
             Our Services
@@ -231,7 +231,7 @@ function Services() {
       </section>
 
       {/* Premium Amenities Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-800 mb-4">
@@ -335,7 +335,7 @@ function Services() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden">
+      <section className="relative py-12 md:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-slate-900 to-slate-800 overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3')] bg-cover bg-center opacity-10"></div>
         <div className="relative max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
